@@ -14,6 +14,7 @@ function App() {
             }} />
           })
         }
+        <Redirect to='/404' />
       </Switch>
     </Frame>
   );

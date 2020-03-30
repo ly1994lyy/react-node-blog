@@ -17,7 +17,6 @@ function Index(props) {
           <Menu
             mode="inline"
             defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
           >
             {routes.map(route => {
@@ -41,7 +40,7 @@ function Index(props) {
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 280
+              minHeight: '100vh'
             }}
           >
             {props.children}

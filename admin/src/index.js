@@ -13,7 +13,7 @@ ReactDOM.render(
        }} />
        {
          mainRouter.map(route=>{
-           return <Route {...route} />
+           return <Route key={route.path} {...route} />
          })
        }
        <Redirect to="/404" />

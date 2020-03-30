@@ -35,15 +35,17 @@ export const adminRouter = [
     path: "/admin/category",
     component: CategoryList,
     isShow: true,
+    exact:true,
     title: "分类管理",
     icon:<BarsOutlined />
   },
   { path: "/admin/category/create", component: EditCategory, isShow: false },
-  { path: "/admin/arcategoryticle/edit/:id", component: EditCategory, isShow: false },
+  { path: "/admin/category/edit/:id", component: EditCategory, isShow: false },
   {
     path: "/admin/article",
     component: ArticleList,
     isShow: true,
+    exact:true,
     title: "文章列表",
     icon:<ReadOutlined />
   },
@@ -52,6 +54,7 @@ export const adminRouter = [
   {
     path: "/admin/user",
     component: UserList,
+    exact:true,
     isShow: true,
     title: "用户列表",
     icon:<TeamOutlined />

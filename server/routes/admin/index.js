@@ -17,8 +17,14 @@ module.exports = app => {
     res.send(model)
   });
 
+  router.get("/categories/:id", async(req, res) => {
+    const model = await Category.findById(req.params.id)
+    res.send(model)
+  });
+
   router.get("/categories", async(req, res) => {
-    const model = await Category.find()
+    const {searchWord} = req.query
+    const model = await Category.find({name:new RegExp(searchWord)})
     res.send(model)
   });
 
@@ -28,10 +34,14 @@ module.exports = app => {
   })
 
   router.delete("/categories/:id",async(req,res)=>{
-    const model = await Category.findByIdAndDelete(req.params.id,req.body)
+    await Category.findByIdAndDelete(req.params.id,req.body)
+    res.send({
+      type:"success",
+      message:"删除成功!"
+    })
   })
 
-  //分类增删改查
+  //文章增删改查
   router.post("/articles", async(req, res) => {
     const {title} = req.body
     const isValid = await Article.findOne({title})
@@ -45,7 +55,13 @@ module.exports = app => {
   });
 
   router.get("/articles", async(req, res) => {
-    const model = await Article.find()
+    const {searchWord} = req.query
+    const model = await Article.find({title:new RegExp(searchWord)}).populate('categories')
+    res.send(model)
+  });
+
+  router.get("/articles/:id", async(req, res) => {
+    const model = await Article.findById(req.params.id)
     res.send(model)
   });
 
@@ -55,7 +71,11 @@ module.exports = app => {
   })
 
   router.delete("/articles/:id",async(req,res)=>{
-    const model = await Article.findByIdAndDelete(req.params.id,req.body)
+    await Article.findByIdAndDelete(req.params.id,req.body)
+    res.send({
+      type:"success",
+      message:"删除成功!"
+    })
   })
 
   app.use("/admin/api", router);
