@@ -84,7 +84,7 @@ function ArticleList(props) {
       <Row justify="space-between" style={{ marginBottom: "15px" }}>
         <Col span={4}>
           <Search
-            placeholder="搜索分类"
+            placeholder="搜索文章"
             allowClear
             onSearch={searchCate}
             style={{ width: 200 }}

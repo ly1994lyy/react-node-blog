@@ -69,11 +69,11 @@ function EditArticle(props) {
         <Input />
       </Form.Item>
       <Form.Item
-        label="分类名称"
+        label="分类"
         name="categories"
         rules={[{ required: true, message: "请填写分类" }]}
       >
-        <Select onChange={handleChange} mode="multiple">
+        <Select onChange={handleChange} mode="multiple" placeholder="请选择分类" allowClear>
           {cateList.map(cate => {
             return (
               <Option key={cate._id} value={cate._id}>
