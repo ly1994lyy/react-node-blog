@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Card, Popconfirm, message, Button } from "antd";
-import { Table, Tag, Input, Row, Col } from "antd";
-import { getCategory, delCategory } from "../../api/category";
+import {
+  Card,
+  Popconfirm,
+  message,
+  Button,
+  Switch,
+  Table,
+  Tag,
+  Input,
+  Row,
+  Col
+} from "antd";
+import { getCategory, delCategory,putCategory } from "../../api/category";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
@@ -18,6 +28,18 @@ function CategoryList(props) {
       title: "分类",
       align: "center",
       dataIndex: "name"
+    },
+    {
+      title: "是否热门",
+      align: "center",
+      dataIndex: "isHot",
+      render: (text, record, index) => {
+        return <Switch checked={record.isHot} onChange={async checked=>{
+          await putCategory(record._id,{isHot:checked});
+          const res = await getCategory();
+          setDataList(res.data)
+        }} />;
+      }
     },
     {
       title: "操作",
@@ -91,7 +113,7 @@ function CategoryList(props) {
         columns={columns}
         dataSource={dataList}
         bordered
-        pagination={{ pageSize: 5, showQuickJumper: true}}
+        pagination={{ pageSize: 5, showQuickJumper: true }}
       />
     </Card>
   );

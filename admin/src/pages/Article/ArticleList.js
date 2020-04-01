@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Popconfirm, message, Button } from "antd";
-import { Table, Tag, Input, Row, Col } from "antd";
-import { getArticle, delArticle } from "../../api/article";
+import { Table, Tag, Input, Row, Col,Switch } from "antd";
+import { getArticle, delArticle,putArticle } from "../../api/article";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
@@ -33,6 +33,18 @@ function ArticleList(props) {
                 )
             }
         }
+    },
+    {
+      title: "是否热门",
+      align: "center",
+      dataIndex: "isHot",
+      render: (text, record, index) => {
+        return <Switch checked={record.isHot} onChange={async checked=>{
+          await putArticle(record._id,{isHot:checked});
+          const res = await getArticle();
+          setDataList(res.data)
+        }} />;
+      }
     },
     {
       title: "操作",
