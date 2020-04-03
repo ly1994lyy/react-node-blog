@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Row, Col, Menu, Drawer, Button, Modal, Form, Input } from "antd";
 import { withRouter } from "react-router-dom";
 import { MenuOutlined, UserOutlined, LockOutlined } from "@ant-design/icons";
-import {login,register} from "../../api/auth"
+import {connect} from "react-redux"
+import {userLogin} from "../../store/actions/loginActions"
+import {register} from "../../api/auth"
 import "./index.scss";
 
 function Nav(props) {
@@ -23,7 +25,7 @@ function Nav(props) {
   }
 
   const onFinish = values => {
-    console.log('Received values of form: ', values);
+    props.dispatch(userLogin({...values}))
   };
   return (
     <div>
@@ -199,4 +201,4 @@ function Nav(props) {
   );
 }
 
-export default withRouter(Nav);
+export default withRouter(connect(state=>state)(Nav));

@@ -47,12 +47,14 @@ module.exports = app => {
         message:'用户名不存在！'
       })
     }
-    const isValid = require('bcrypt').compareSync(user.password,password)
+    const isValid = require('bcrypt').compareSync(password,user.password)
     if(!isValid){
       return res.status(422).send({
         message:'密码错误'
       })
     }
+    const token = jwt.sign({id:user._id,username:user.username},'sdfsgdfgfdhdhretet')
+    res.send({token})
   })
   app.use("/web/api", router);
 };
