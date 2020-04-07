@@ -36,7 +36,7 @@ function ArticleList(props) {
                         <Tag
                           key={cate._id}
                           style={{ marginRight: 5 }}
-                          color="#2db7f5"
+                          color={cate.color}
                         >
                           分类:{cate.name}
                         </Tag>

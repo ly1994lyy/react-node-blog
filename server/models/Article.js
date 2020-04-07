@@ -11,4 +11,12 @@ const schema = mongoose.Schema({
     updatedAt:"updated"
 }})
 
+
+schema.virtual('comments',{
+    localField:"_id",
+    foreignField:'article',
+    justOne:false,
+    ref:"Comment"
+})
+
 module.exports = mongoose.model('Article',schema)

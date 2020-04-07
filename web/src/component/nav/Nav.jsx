@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Row, Col, Menu, Drawer, Button, Modal, Form, Input } from "antd";
 import { withRouter } from "react-router-dom";
 import { MenuOutlined, UserOutlined, LockOutlined } from "@ant-design/icons";
-import {connect} from "react-redux"
-import {userLogin} from "../../store/actions/loginActions"
-import {register} from "../../api/auth"
+import { connect } from "react-redux";
+import { userLogin, userRegister } from "../../store/actions/authActions";
 import "./index.scss";
 
 function Nav(props) {
@@ -19,14 +18,15 @@ function Nav(props) {
     setVisible(false);
   };
 
-  const onRegisterFinish =async values=>{
-    const res = await register({...values})
-    console.log(res);
-  }
+  const onRegisterFinish = async values => {
+    props.dispatch(userRegister({ ...values }));
+  };
 
   const onFinish = values => {
-    props.dispatch(userLogin({...values}))
+    props.dispatch(userLogin({ ...values }));
   };
+  const isLogin = props.user;
+
   return (
     <div>
       <Row className="navBar">
@@ -62,10 +62,22 @@ function Nav(props) {
           </Menu>
         </Col>
         <Col xs={0} sm={{ span: 4, offset: 3 }} style={{ lineHeight: "60px" }}>
-          <Button type="link" style={{ margin: "0 10px" }} onClick={()=>setLoginVisible(true)}>
-            登录
-          </Button>
-          <Button type="link" onClick={()=>setRegisterVisible(true)}>注册</Button>
+          {isLogin.isAuthenticated ? (
+            <div>{isLogin.user.username}</div>
+          ) : (
+            <Fragment>
+              <Button
+                type="link"
+                style={{ margin: "0 10px" }}
+                onClick={() => setLoginVisible(true)}
+              >
+                登录
+              </Button>
+              <Button type="link" onClick={() => setRegisterVisible(true)}>
+                注册
+              </Button>
+            </Fragment>
+          )}
         </Col>
         <Col xs={{ span: 2, offset: 2 }} sm={0}>
           <MenuOutlined className="meauBtn" onClick={showDrawer} />
@@ -91,8 +103,8 @@ function Nav(props) {
         <Modal
           title="登录"
           visible={loginVisible}
-          onOk={e=>setLoginVisible(false)}
-          onCancel={e=>setLoginVisible(false)}
+          onOk={e => setLoginVisible(false)}
+          onCancel={e => setLoginVisible(false)}
         >
           <Form
             name="normal_login"
@@ -135,13 +147,12 @@ function Nav(props) {
           </Form>
         </Modal>
 
-
         {/* 注册框 */}
         <Modal
           title="注册"
           visible={registerVisible}
-          onOk={e=>setRegisterVisible(false)}
-          onCancel={e=>setRegisterVisible(false)}
+          onOk={e => setRegisterVisible(false)}
+          onCancel={e => setRegisterVisible(false)}
         >
           <Form
             name="normal_login"
@@ -201,4 +212,10 @@ function Nav(props) {
   );
 }
 
-export default withRouter(connect(state=>state)(Nav));
+const mapStateToProps = state => {
+  return {
+    user: state.auth
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(Nav));

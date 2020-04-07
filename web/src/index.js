@@ -16,6 +16,11 @@ import ArticleList from "./pages/article/ArticleList";
 import Article from "./pages/article/Article";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import {setCurrentUser} from "./store/actions/authActions"
+
+if(localStorage.token){
+  store.dispatch(setCurrentUser(localStorage.token))
+}
 
 ReactDOM.render(
   <Provider store={store}>

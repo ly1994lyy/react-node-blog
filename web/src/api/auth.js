@@ -7,3 +7,7 @@ export const register = (data)=>{
 export const login = (data)=>{
     return post('/login',data)
 }
+
+export const comment = (data)=>{
+    return post('/comment',data)
+}

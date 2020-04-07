@@ -5,9 +5,15 @@ module.exports = app => {
   const Category = require("../../models/Category");
   const Article = require("../../models/Article")
   const User = require("../../models/User")
+  const Comment = require("../../models/Comment")
 
   router.get("/categories", async (req, res) => {
     const model = await Category.find();
+    res.send(model);
+  });
+
+  router.get("/categories/:id", async (req, res) => {
+    const model = await Category.findById(req.params.id).populate({path:'articlelist'}).lean();
     res.send(model);
   });
 
@@ -17,7 +23,7 @@ module.exports = app => {
   });
 
   router.get("/articles/:id", async (req, res) => {
-    const model = await Article.findById(req.params.id).populate('categories');
+    const model = await Article.findById(req.params.id).populate({path:"comments"}).populate("categories").lean();
     res.send(model);
   });
 
@@ -37,6 +43,11 @@ module.exports = app => {
         message:'两次密码不一样！'
       })
     }
+  })
+
+  router.post("/comment",async(req,res)=>{
+    const model = await Comment.create(req.body)
+    res.send(model)
   })
 
   router.post("/login",async (req,res)=>{

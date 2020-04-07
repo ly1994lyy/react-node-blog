@@ -13,8 +13,10 @@ import {
 } from "antd";
 import { LikeFilled } from "@ant-design/icons";
 import { getArtById } from "../../api/article";
+import { comment } from "../../api/auth";
 import { dayGet, dayGetDetail } from "../../utils/day";
 import HomeRight from "../../component/home/HomeRight";
+import { connect } from "react-redux";
 
 const { TextArea } = Input;
 
@@ -39,7 +41,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
         onClick={onSubmit}
         type="primary"
       >
-        Add Comment
+        提交评论
       </Button>
     </Form.Item>
   </div>
@@ -54,30 +56,49 @@ function Article(props) {
   const [value, setValue] = useState("");
   useEffect(() => {
     getArtById(props.match.params.id).then(res => {
+      const  userComments = res.data.comments;
+      const a= []
+      userComments.map(item=>{
+        a.push({
+          author: item.commenter,
+          avatar:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          content: <p>{item.body}</p>,
+          datetime: dayGetDetail(item.created)
+        })
+      })
       setArt(res.data);
+      setComments(a);
     });
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!value) {
       return;
     }
-
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setValue("");
-      setComments([
-        {
-          author: "Han Solo",
+    const values = {};
+    values.commenter = props.user.id;
+    values.article = props.match.params.id;
+    values.body = value;
+    await comment({ ...values });
+    setSubmitting(false);
+    setValue("");
+    getArtById(props.match.params.id).then(res => {
+      const  userComments = res.data.comments;
+      const a= []
+      userComments.map(item=>{
+        a.push({
+          author: item.commenter,
           avatar:
             "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          content: <p>{value}</p>,
-          datetime: dayGetDetail("2020-04-01 05:49:25.051Z")
-        },
-        ...comments
-      ]);
-    }, 1000);
+          content: <p>{item.body}</p>,
+          datetime: dayGetDetail(item.created)
+        })
+      })
+      setArt(res.data);
+      setComments(a);
+    });
   };
 
   const handleChange = e => {
@@ -101,7 +122,7 @@ function Article(props) {
                     <Tag
                       key={cate._id}
                       style={{ marginRight: 5 }}
-                      color="#2db7f5"
+                      color={cate.color}
                     >
                       分类:{cate.name}
                     </Tag>
@@ -142,4 +163,10 @@ function Article(props) {
   );
 }
 
-export default Article;
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user
+  };
+};
+
+export default connect(mapStateToProps)(Article);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button } from "antd";
+import { Card, Button,Tag } from "antd";
 import "./index.scss";
 import {
   GithubFilled,
@@ -40,7 +40,7 @@ function HomeRight() {
       <Card title="热门分类" style={{ width: "100%", marginTop: 16 }}>
         {
           cateList.map(item=>{
-          return <p key={item._id}>{item.name}</p>
+          return <Tag key={item._id} color={item.color} style={{margin:'4px 10px'}}>{item.name}</Tag>
           })
         }
       </Card>

@@ -5,6 +5,7 @@ import {
   getCategoryById,
   putCategory
 } from "../../api/category";
+import {SketchPicker} from "react-color"
 
 const layout = {
   labelCol: { span: 4 },
@@ -17,14 +18,17 @@ const tailLayout = {
 function EditCategory(props) {
   const [form] = Form.useForm();
   const [dataCurrent] = useState({});
+  const [currentColor,setColor] = useState('')
   useEffect(() => {
     if (props.match.params.id) {
       getCategoryById(props.match.params.id).then(res => {
         form.setFieldsValue({ ...res.data });
+        setColor(res.data.color)
       });
     }
   }, []);
-  const onFinish = async values => {
+  const onFinish =async values => {
+    values.color = currentColor
     if (props.match.params.id) {
       await putCategory(props.match.params.id, { ...values });
       message.success("修改分类成功！");
@@ -55,6 +59,13 @@ function EditCategory(props) {
         rules={[{ required: true, message: "请填写分类" }]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item
+        label="颜色"
+        name="color"
+        rules={[{ required: true, message: "请选择颜色" }]}
+      >
+        <SketchPicker onChange={e=>setColor(e.hex)} color={currentColor}/>
       </Form.Item>
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
