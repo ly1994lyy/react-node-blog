@@ -11,3 +11,7 @@ export const login = (data)=>{
 export const comment = (data)=>{
     return post('/comment',data)
 }
+
+export const like = (data)=>{
+    return post('/like',data)
+}

@@ -9,11 +9,12 @@ import {
   Form,
   Button,
   List,
-  Input
+  Input,
+  message,
 } from "antd";
-import { LikeFilled } from "@ant-design/icons";
+import { LikeFilled, LikeOutlined } from "@ant-design/icons";
 import { getArtById } from "../../api/article";
-import { comment } from "../../api/auth";
+import { comment, like } from "../../api/auth";
 import { dayGet, dayGetDetail } from "../../utils/day";
 import HomeRight from "../../component/home/HomeRight";
 import { connect } from "react-redux";
@@ -25,7 +26,7 @@ const CommentList = ({ comments }) => (
     dataSource={comments}
     header={`${comments.length} ${comments.length > 1 ? "replies" : "reply"}`}
     itemLayout="horizontal"
-    renderItem={props => <Comment {...props} />}
+    renderItem={(props) => <Comment {...props} />}
   />
 );
 
@@ -49,28 +50,49 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 function Article(props) {
   const [art, setArt] = useState({
-    categories: []
+    categories: [],
+    likes: [],
   });
   const [comments, setComments] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [value, setValue] = useState("");
+  const [isLike, setLike] = useState(false);
   useEffect(() => {
-    getArtById(props.match.params.id).then(res => {
-      const  userComments = res.data.comments;
-      const a= []
-      userComments.map(item=>{
+    getArtById(props.match.params.id).then((res) => {
+      if (props.user) {
+        const isValid = res.data.likes.find((item) => {
+          return item.user === props.user.id;
+        });
+        if (isValid) setLike(true);
+      }
+
+      const userComments = res.data.comments;
+      const a = [];
+      userComments.map((item) => {
         a.push({
-          author: item.commenter,
+          author: item.commenter.username,
           avatar:
             "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
           content: <p>{item.body}</p>,
-          datetime: dayGetDetail(item.created)
-        })
-      })
+          datetime: dayGetDetail(item.created),
+        });
+      });
       setArt(res.data);
       setComments(a);
     });
   }, []);
+
+  const liked = async () => {
+    const values = {};
+    values.user = props.user.id;
+    values.article = props.match.params.id;
+    await like({ ...values });
+    message.success("感谢点赞~");
+  };
+
+  const cancleLiked = () => {
+    console.log("cancle");
+  };
 
   const handleSubmit = async () => {
     if (!value) {
@@ -84,24 +106,24 @@ function Article(props) {
     await comment({ ...values });
     setSubmitting(false);
     setValue("");
-    getArtById(props.match.params.id).then(res => {
-      const  userComments = res.data.comments;
-      const a= []
-      userComments.map(item=>{
+    getArtById(props.match.params.id).then((res) => {
+      const userComments = res.data.comments;
+      const a = [];
+      userComments.map((item) => {
         a.push({
-          author: item.commenter,
+          author: item.commenter.username,
           avatar:
             "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
           content: <p>{item.body}</p>,
-          datetime: dayGetDetail(item.created)
-        })
-      })
+          datetime: dayGetDetail(item.created),
+        });
+      });
       setArt(res.data);
       setComments(a);
     });
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setValue(e.target.value);
   };
 
@@ -117,7 +139,7 @@ function Article(props) {
                 &nbsp;
                 <Tag color="#87d068">更新:{dayGet(art.updatedAt)}</Tag>
                 &nbsp;
-                {art.categories.map(cate => {
+                {art.categories.map((cate) => {
                   return (
                     <Tag
                       key={cate._id}
@@ -130,11 +152,17 @@ function Article(props) {
                 })}
                 &nbsp;
                 <Tag color="#f50" icon={<LikeFilled />}>
-                  {art.liked}
+                  {art.likes.length}
                 </Tag>
               </p>
               <p dangerouslySetInnerHTML={{ __html: art.body }}></p>
               <div className="tx-c"></div>
+              {isLike ? (
+                <LikeFilled onClick={cancleLiked} />
+              ) : (
+                <LikeOutlined onClick={liked} />
+              )}
+
               {comments.length > 0 && <CommentList comments={comments} />}
               <Comment
                 avatar={
@@ -163,9 +191,9 @@ function Article(props) {
   );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
   };
 };
 

@@ -5,7 +5,6 @@ const schema = mongoose.Schema({
     body:{type:String},
     isHot:{type:Boolean,default:false},
     categories:[{type:mongoose.SchemaTypes.ObjectId,ref:'Category'}],
-    liked:{type:Number,default:0}
 },{timestamps:{
     createdAt:"created",
     updatedAt:"updated"
@@ -17,6 +16,13 @@ schema.virtual('comments',{
     foreignField:'article',
     justOne:false,
     ref:"Comment"
+})
+
+schema.virtual('likes',{
+    localField:"_id",
+    foreignField:'article',
+    justOne:false,
+    ref:"Like"
 })
 
 module.exports = mongoose.model('Article',schema)

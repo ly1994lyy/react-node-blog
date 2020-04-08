@@ -10,4 +10,11 @@ const schema = mongoose.Schema({
   }
 });
 
+schema.virtual('likes',{
+  localField:'_id',
+  foreignField:"user",
+  justOne:false,
+  ref:'Like'
+})
+
 module.exports = mongoose.model("User", schema);
