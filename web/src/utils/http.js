@@ -25,7 +25,7 @@ export const post = (url, data) => {
 };
 
 export const put = (url, data) => {
-  return http.put(url.data);
+  return http.put(url,data);
 };
 
 export const del = url => {

@@ -29,7 +29,7 @@ function Category(props) {
                     xs={12}
                     style={{ margin: "10px 0" }}
                   >
-                    <Tag color={cate.color} className="cate">
+                    <Tag color={cate.color} className="cate" onClick={()=>props.history.push(`/category/${cate._id}`)}>
                       {cate.name}
                     </Tag>
                   </Col>

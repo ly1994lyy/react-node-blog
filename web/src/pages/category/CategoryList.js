@@ -2,23 +2,25 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Tag } from "antd";
 import { Card } from "antd";
 import { LikeFilled } from "@ant-design/icons";
-import { getArt } from "../../api/article";
+import { getCateById } from "../../api/category";
 import { dayGet } from "../../utils/day";
 import HomeRight from "../../component/home/HomeRight";
 
-function ArticleList(props) {
+function CategoryList(props) {
   const [artList, setArtList] = useState([]);
+  const [title, setTitle] = useState('');
   useEffect(() => {
-    getArt().then(res => {
-      setArtList(res.data);
-    });
+    getCateById(props.match.params.id).then(res=>{
+        setArtList(res.data.articlelist)
+        setTitle("分类:"+res.data.name)
+    })
   }, []);
   return (
     <div>
       <Row>
         <Col xs={24} sm={{ span: 14, offset: 4 }}>
           <Card
-            title="博客列表"
+            title={title}
             xs={{ marginTop: 0 }}
             style={{ width: "100%", marginTop: 16 }}
           >
@@ -30,18 +32,6 @@ function ArticleList(props) {
                     <Tag color="#108ee9">创建:{dayGet(item.createdAt)}</Tag>
                     &nbsp;
                     <Tag color="#87d068">更新:{dayGet(item.updatedAt)}</Tag>
-                    &nbsp;
-                    {item.categories.map(cate => {
-                      return (
-                        <Tag
-                          key={cate._id}
-                          style={{ marginRight: 5 }}
-                          color={cate.color}
-                        >
-                          分类:{cate.name}
-                        </Tag>
-                      );
-                    })}
                     &nbsp;
                     <Tag color="#f50" icon={<LikeFilled />}>
                       {item.likes.length}
@@ -72,4 +62,4 @@ function ArticleList(props) {
   );
 }
 
-export default ArticleList;
+export default CategoryList;

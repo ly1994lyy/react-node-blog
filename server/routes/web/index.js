@@ -15,20 +15,23 @@ module.exports = (app) => {
 
   router.get("/categories/:id", async (req, res) => {
     const model = await Category.findById(req.params.id)
-      .populate({ path: "articlelist" })
+      .populate({path: "articlelist",populate:{path:"likes"}})
       .lean();
     res.send(model);
   });
 
   router.get("/articles", async (req, res) => {
-    const model = await Article.find().populate("categories");
+    const model = await Article.find()
+      .populate("categories")
+      .populate({ path: "likes" })
+      .lean();
     res.send(model);
   });
 
   router.get("/articles/:id", async (req, res) => {
     const model = await Article.findById(req.params.id)
       .populate({ path: "comments", populate: "commenter" })
-      .populate({path:'likes'})
+      .populate({ path: "likes" })
       .populate("categories")
       .lean();
     res.send(model);
@@ -62,9 +65,20 @@ module.exports = (app) => {
     res.send(model);
   });
 
+  router.delete("/like/:userId/:artId", async (req, res) => {
+    console.log(req.params);
+    const model = await Like.findOneAndDelete({
+      user: req.params.userId,
+      article: req.params.artId,
+    });
+    res.send(model);
+  });
+
   router.post("/login", async (req, res) => {
     const { username, password } = req.body;
-    const user = await User.findOne({ username }).populate({path:'likes'}).lean();
+    const user = await User.findOne({ username })
+      .populate({ path: "likes" })
+      .lean();
     if (!user) {
       return res.status(422).send({
         message: "用户名不存在！",
@@ -77,7 +91,7 @@ module.exports = (app) => {
       });
     }
     const token = jwt.sign(
-      { id: user._id, username: user.username},
+      { id: user._id, username: user.username },
       "sdfsgdfgfdhdhretet"
     );
     res.send({ token });

@@ -14,7 +14,7 @@ import {
 } from "antd";
 import { LikeFilled, LikeOutlined } from "@ant-design/icons";
 import { getArtById } from "../../api/article";
-import { comment, like } from "../../api/auth";
+import { comment, like,cancleLike } from "../../api/auth";
 import { dayGet, dayGetDetail } from "../../utils/day";
 import HomeRight from "../../component/home/HomeRight";
 import { connect } from "react-redux";
@@ -57,29 +57,32 @@ function Article(props) {
   const [submitting, setSubmitting] = useState(false);
   const [value, setValue] = useState("");
   const [isLike, setLike] = useState(false);
-  useEffect(() => {
-    getArtById(props.match.params.id).then((res) => {
-      if (props.user) {
-        const isValid = res.data.likes.find((item) => {
-          return item.user === props.user.id;
-        });
-        if (isValid) setLike(true);
-      }
-
-      const userComments = res.data.comments;
-      const a = [];
-      userComments.map((item) => {
-        a.push({
-          author: item.commenter.username,
-          avatar:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          content: <p>{item.body}</p>,
-          datetime: dayGetDetail(item.created),
-        });
+  const fetch = async () => {
+    const res = await getArtById(props.match.params.id);
+    if (props.user) {
+      const isValid = res.data.likes.find((item) => {
+        return item.user === props.user.id;
       });
-      setArt(res.data);
-      setComments(a);
+      if (isValid) setLike(true);
+    }
+
+    const userComments = res.data.comments;
+    const a = [];
+    userComments.map((item) => {
+      a.push({
+        author: item.commenter.username,
+        avatar:
+          "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+        content: <p>{item.body}</p>,
+        datetime: dayGetDetail(item.created),
+      });
     });
+    setArt(res.data);
+    setComments(a);
+  };
+
+  useEffect(() => {
+    fetch();
   }, []);
 
   const liked = async () => {
@@ -88,10 +91,13 @@ function Article(props) {
     values.article = props.match.params.id;
     await like({ ...values });
     message.success("感谢点赞~");
+    fetch();
   };
 
-  const cancleLiked = () => {
-    console.log("cancle");
+  const cancleLiked =async () => {
+    await cancleLike(props.user.id,props.match.params.id)
+    fetch()
+    setLike(false)
   };
 
   const handleSubmit = async () => {
@@ -106,21 +112,7 @@ function Article(props) {
     await comment({ ...values });
     setSubmitting(false);
     setValue("");
-    getArtById(props.match.params.id).then((res) => {
-      const userComments = res.data.comments;
-      const a = [];
-      userComments.map((item) => {
-        a.push({
-          author: item.commenter.username,
-          avatar:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          content: <p>{item.body}</p>,
-          datetime: dayGetDetail(item.created),
-        });
-      });
-      setArt(res.data);
-      setComments(a);
-    });
+    fetch();
   };
 
   const handleChange = (e) => {

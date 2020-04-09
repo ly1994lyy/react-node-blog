@@ -13,4 +13,19 @@ schema.virtual('articlelist',{
     ref:"Article"
 })
 
+schema.virtual("likes",{
+    localField:'_id',
+    foreignField:'article',
+    justOne:false,
+    ref:"Like"
+})
+
+schema.virtual("categories",{
+    localField:"_id",
+    foreignField:"categories",
+    justOne:false,
+    ref:"Category"
+})
+
+
 module.exports = mongoose.model('Category',schema)

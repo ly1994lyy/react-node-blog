@@ -60,6 +60,7 @@ function Nav(props) {
               关于作者
             </Menu.Item>
           </Menu>
+          
         </Col>
         <Col xs={0} sm={{ span: 4, offset: 3 }} style={{ lineHeight: "60px" }}>
           {isLogin.isAuthenticated ? (

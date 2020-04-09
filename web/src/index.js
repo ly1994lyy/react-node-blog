@@ -5,7 +5,7 @@ import {
   HashRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import Home from "./pages/home/Home";
 import About from "./pages/about/About";
@@ -16,10 +16,11 @@ import ArticleList from "./pages/article/ArticleList";
 import Article from "./pages/article/Article";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import {setCurrentUser} from "./store/actions/authActions"
+import { setCurrentUser } from "./store/actions/authActions";
+import CategoryList from "./pages/category/CategoryList";
 
-if(localStorage.token){
-  store.dispatch(setCurrentUser(localStorage.token))
+if (localStorage.token) {
+  store.dispatch(setCurrentUser(localStorage.token));
 }
 
 ReactDOM.render(
@@ -30,7 +31,8 @@ ReactDOM.render(
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
-          <Route path="/category" component={Category} />
+          <Route path="/category" exact component={Category} />
+          <Route path="/category/:id" component={CategoryList} />
           <Route path="/article" exact component={ArticleList} />
           <Route path="/article/:id" component={Article} />
           <Redirect to="/404" />
