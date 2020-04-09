@@ -13,6 +13,15 @@ http.interceptors.response.use(response=>{
     return Promise.reject(err)
 })
 
+http.interceptors.request.use(config=>{
+    if(localStorage.admintoken){
+        config.headers.Authorization = 'Bearer ' + localStorage.admintoken
+    }
+    return config
+},err=>{
+    return Promise.reject(err)
+})
+
 export const get = (url,params)=>{
     return http.get(url,{params})
 }

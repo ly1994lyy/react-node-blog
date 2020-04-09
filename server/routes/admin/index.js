@@ -3,6 +3,10 @@ module.exports = app => {
   const router = express.Router();
   const Category = require('../../models/Category')
   const Article = require('../../models/Article')
+  const AdminUser = require('../../models/AdminUser')
+  const bcrypt = require("bcrypt")
+  const jwt = require("jsonwebtoken")
+  const authMiddleWare = require('../../middleware/auth')
 
   //分类增删改查
   router.post("/categories", async(req, res) => {
@@ -78,5 +82,17 @@ module.exports = app => {
     })
   })
 
-  app.use("/admin/api", router);
+
+  //登录接口
+  app.post("/admin/api/login",async (req,res)=>{
+    const {username,password} = req.body
+    const user = await AdminUser.findOne({username})
+    if(!user) res.status(401).send({message:"用户名不存在!"})
+    const isValid = bcrypt.compareSync(password,user.password)
+    if(!isValid) res.status(401).send({message:"密码错误!"})
+    const token = jwt.sign({id:user._id},'asdla324Ekakdl#klasdkasldkalda',{expiresIn:60})
+    res.send({token})
+  })
+
+  app.use("/admin/api",authMiddleWare(), router);
 };
