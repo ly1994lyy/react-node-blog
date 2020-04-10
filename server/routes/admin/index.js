@@ -4,9 +4,13 @@ module.exports = app => {
   const Category = require('../../models/Category')
   const Article = require('../../models/Article')
   const AdminUser = require('../../models/AdminUser')
+  const User = require('../../models/User')
+  const Other = require("../../models/Other")
+  const About = require("../../models/About")
   const bcrypt = require("bcrypt")
   const jwt = require("jsonwebtoken")
   const authMiddleWare = require('../../middleware/auth')
+  const multer = require("multer")
 
   //分类增删改查
   router.post("/categories", async(req, res) => {
@@ -82,6 +86,72 @@ module.exports = app => {
     })
   })
 
+  //其他作品接口
+  router.get("/other", async(req, res) => {
+    const model = await Other.find()
+    res.send(model)
+  });
+
+  router.get("/other/:id", async(req, res) => {
+    const model = await Other.findById(req.params.id)
+    res.send(model)
+  });
+
+  router.post("/other", async(req, res) => {
+    const model = await Other.create(req.body)
+    res.send(model)
+  });
+
+  router.put("/other/:id", async(req, res) => {
+    const model = await Other.findByIdAndUpdate(req.params.id,req.body)
+    res.send(model)
+  });
+  //关于作者接口
+  router.get("/about", async(req, res) => {
+    const model = await About.find()
+    res.send(model)
+  });
+
+  router.get("/about/:id", async(req, res) => {
+    const model = await About.findById(req.params.id)
+    res.send(model)
+  });
+
+  router.post("/about", async(req, res) => {
+    const model = await About.create(req.body)
+    res.send(model)
+  });
+
+  router.put("/about/:id", async(req, res) => {
+    const model = await About.findByIdAndUpdate(req.params.id,req.body)
+    res.send(model)
+  });
+
+  //用户接口
+  router.get("/user",async(req,res)=>{
+    const {username} = req.query
+    const model = await User.find({username:new RegExp(username)})
+    res.send(model)
+  })
+
+  router.delete("/user/:id",async(req,res)=>{
+    await User.findByIdAndDelete(req.params.id)
+    res.send({
+      type:"success",
+      message:"删除成功!"
+    })
+  })
+
+  app.use("/admin/api/rest",authMiddleWare(app.get('adminKey'),AdminUser), router);
+
+
+  //上传图片接口
+  const upload = multer({dest:__dirname+"/../../uploads"})
+  app.post("/admin/api/upload",upload.single('file'),async(req,res)=>{
+    const file = req.file
+    file.url=`http://localhost:4000/uploads/${file.filename}`
+    res.send(file)
+  })
 
   //登录接口
   app.post("/admin/api/login",async (req,res)=>{
@@ -90,9 +160,8 @@ module.exports = app => {
     if(!user) res.status(401).send({message:"用户名不存在!"})
     const isValid = bcrypt.compareSync(password,user.password)
     if(!isValid) res.status(401).send({message:"密码错误!"})
-    const token = jwt.sign({id:user._id},'asdla324Ekakdl#klasdkasldkalda',{expiresIn:60})
+    const token = jwt.sign({id:user._id},app.get('adminKey'))
     res.send({token})
   })
 
-  app.use("/admin/api",authMiddleWare(), router);
 };

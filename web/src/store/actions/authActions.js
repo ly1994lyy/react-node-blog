@@ -11,7 +11,7 @@ export const setCurrentUser = user=>{
 
 export const userLogin = userData => async dispatch => {
   const res = await login(userData);
-  localStorage.setItem('token',res.data.token)
+  localStorage.setItem('usertoken',res.data.token)
   dispatch(setCurrentUser(res.data.token))
 };
 

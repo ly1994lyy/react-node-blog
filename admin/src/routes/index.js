@@ -13,10 +13,16 @@ import {
     TeamOutlined,
     HomeOutlined,
     ReadOutlined,
-    BarsOutlined
+    BarsOutlined,
+    IdcardOutlined,
+    FolderViewOutlined
   } from "@ant-design/icons";
 import EditCategory from '../pages/Category/EditCategory';
 import CategoryList from '../pages/Category/CategoryList';
+import OtherList from '../pages/Other/OtherList';
+import AboutList from '../pages/About/AboutList';
+import EditOther from '../pages/Other/EditOther';
+import EditAbout from '../pages/About/EditAbout';
 
 export const mainRouter = [
   {
@@ -63,9 +69,30 @@ export const adminRouter = [
     path: "/admin/adminuser",
     component: AdminUserList,
     isShow: true,
+    exact:true,
     title: "管理员列表",
     icon:<UserOutlined />
   },
   { path: "/admin/adminuser/create", component: EditAdminUser, isShow: false },
   { path: "/admin/adminuser/edit/:id", component: EditAdminUser, isShow: false },
+  {
+    path: "/admin/other",
+    component: OtherList,
+    isShow: true,
+    exact:true,
+    title: "其他作品",
+    icon:<FolderViewOutlined />
+  },
+  { path: "/admin/other/create", component: EditOther, isShow: false },
+  { path: "/admin/other/edit/:id", component: EditOther, isShow: false },
+  {
+    path: "/admin/about",
+    component: AboutList,
+    isShow: true,
+    exact:true,
+    title: "关于作者",
+    icon:<IdcardOutlined />
+  },
+  { path: "/admin/about/create", component: EditAbout, isShow: false },
+  { path: "/admin/about/edit/:id", component: EditAbout, isShow: false },
 ];

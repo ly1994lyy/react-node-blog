@@ -19,8 +19,8 @@ import store from "./store/store";
 import { setCurrentUser } from "./store/actions/authActions";
 import CategoryList from "./pages/category/CategoryList";
 
-if (localStorage.token) {
-  store.dispatch(setCurrentUser(localStorage.token));
+if (localStorage.usertoken) {
+  store.dispatch(setCurrentUser(localStorage.usertoken));
 }
 
 ReactDOM.render(

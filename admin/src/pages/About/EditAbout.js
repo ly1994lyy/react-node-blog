@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, message, Select } from "antd";
-import { createArticle, getArticleById, putArticle } from "../../api/article";
-import { getCategory } from "../../api/category";
+import { Form, Button, message } from "antd";
+import { createAbout, getAboutById, putAbout } from "../../api/about";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
 
-const { Option } = Select;
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 18 },
@@ -14,20 +12,15 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-function EditArticle(props) {
+function EditAbout(props) {
   const [form] = Form.useForm();
-  const [cateList, setCateList] = useState([]);
   const [editorState, setEditorState] = useState(null);
   useEffect(() => {
     if (props.match.params.id) {
-      getArticleById(props.match.params.id).then((res) => {
-        form.setFieldsValue({ ...res.data });
+      getAboutById(props.match.params.id).then((res) => {
         setEditorState(BraftEditor.createEditorState(res.data.body));
       });
     }
-    getCategory().then((res) => {
-      setCateList(res.data);
-    });
   }, []);
 
   //富文本媒体上传设置
@@ -77,15 +70,14 @@ function EditArticle(props) {
 
   const onFinish = async (values) => {
     values.body = editorState.toHTML();
-    console.log(values);
     if (props.match.params.id) {
-      await putArticle(props.match.params.id, { ...values });
-      message.success("修改文章成功！");
+      await putAbout(props.match.params.id, { ...values });
+      message.success("修改成功！");
     } else {
-      await createArticle({ ...values });
-      message.success("添加文章成功！");
+      await createAbout({ ...values });
+      message.success("添加成功！");
     }
-    props.history.push("/admin/article");
+    props.history.push("/admin/about");
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -109,34 +101,7 @@ function EditArticle(props) {
       form={form}
     >
       <Form.Item
-        label="文章标题"
-        name="title"
-        rules={[{ required: true, message: "请填写标题" }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="分类"
-        name="categories"
-        rules={[{ required: true, message: "请填写分类" }]}
-      >
-        <Select
-          onChange={handleChange}
-          mode="multiple"
-          placeholder="请选择分类"
-          allowClear
-        >
-          {cateList.map((cate) => {
-            return (
-              <Option key={cate._id} value={cate._id}>
-                {cate.name}
-              </Option>
-            );
-          })}
-        </Select>
-      </Form.Item>
-      <Form.Item
-        label="文章内容"
+        label="内容"
         rules={[{ required: true, message: "请填写内容" }]}
       >
         <BraftEditor
@@ -156,4 +121,4 @@ function EditArticle(props) {
   );
 }
 
-export default EditArticle;
+export default EditAbout

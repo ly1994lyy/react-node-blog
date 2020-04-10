@@ -1,21 +1,21 @@
 import { get,post,del,put } from "../utils/http"
 
 export const getCategory = (keyWord) =>{
-    return get('/categories',keyWord)
+    return get('/rest/categories',keyWord)
 }
 
 export const getCategoryById = (id) =>{
-    return get(`/categories/${id}`)
+    return get(`/rest/categories/${id}`)
 }
 
 export const createCategory = (data) =>{
-    return post('/categories',data)
+    return post('/rest/categories',data)
 }
 
 export const putCategory = (id,data) =>{
-    return put(`/categories/${id}`,data)
+    return put(`/rest/categories/${id}`,data)
 }
 
 export const delCategory = (id) =>{
-    return del(`/categories/${id}`)
+    return del(`/rest/categories/${id}`)
 }

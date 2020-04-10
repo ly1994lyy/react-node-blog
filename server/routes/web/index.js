@@ -7,7 +7,9 @@ module.exports = (app) => {
   const User = require("../../models/User");
   const Comment = require("../../models/Comment");
   const Like = require("../../models/Like");
+  const authMiddleWare = require("../../middleware/auth")
 
+  //分类接口
   router.get("/categories", async (req, res) => {
     const model = await Category.find();
     res.send(model);
@@ -20,6 +22,7 @@ module.exports = (app) => {
     res.send(model);
   });
 
+  //文章接口
   router.get("/articles", async (req, res) => {
     const model = await Article.find()
       .populate("categories")
@@ -37,6 +40,8 @@ module.exports = (app) => {
     res.send(model);
   });
 
+
+  //用户注册接口
   router.post("/register", async (req, res) => {
     const { username, password, passwordConfirm } = req.body;
     const useIsValid = await User.findOne({ username });
@@ -55,18 +60,19 @@ module.exports = (app) => {
     }
   });
 
-  router.post("/comment", async (req, res) => {
+  //评论接口
+  router.post("/comment",authMiddleWare(app.get('userKey'),User), async (req, res) => {
     const model = await Comment.create(req.body);
     res.send(model);
   });
 
-  router.post("/like", async (req, res) => {
+  //点赞取消赞接口
+  router.post("/like",authMiddleWare(app.get('userKey'),User), async (req, res) => {
     const model = await Like.create(req.body);
     res.send(model);
   });
 
-  router.delete("/like/:userId/:artId", async (req, res) => {
-    console.log(req.params);
+  router.delete("/like/:userId/:artId",authMiddleWare(app.get('userKey'),User), async (req, res) => {
     const model = await Like.findOneAndDelete({
       user: req.params.userId,
       article: req.params.artId,
@@ -74,6 +80,7 @@ module.exports = (app) => {
     res.send(model);
   });
 
+  //用户登录接口
   router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username })
@@ -90,10 +97,7 @@ module.exports = (app) => {
         message: "密码错误",
       });
     }
-    const token = jwt.sign(
-      { id: user._id, username: user.username },
-      "sdfsgdfgfdhdhretet"
-    );
+    const token = jwt.sign({ id: user._id, username: user.username },app.get('userKey'));
     res.send({ token });
   });
   app.use("/web/api", router);

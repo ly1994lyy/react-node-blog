@@ -1,14 +1,18 @@
 import axios from "axios"
 import {message} from "antd"
+import {createHashHistory} from "history"
 
 const http = axios.create({
     baseURL:"http://localhost:4000/admin/api"
 })
 
-
 http.interceptors.response.use(response=>{
     return response
 },err=>{
+    if(err.response.status===401){
+        const history = createHashHistory()
+        history.push('/login')
+    }
     message.error(err.response.data.message)
     return Promise.reject(err)
 })

@@ -18,6 +18,7 @@ import { comment, like,cancleLike } from "../../api/auth";
 import { dayGet, dayGetDetail } from "../../utils/day";
 import HomeRight from "../../component/home/HomeRight";
 import { connect } from "react-redux";
+import "./index.scss"
 
 const { TextArea } = Input;
 
@@ -124,7 +125,7 @@ function Article(props) {
       <Row>
         <Col xs={24} sm={{ span: 14, offset: 4 }}>
           <Card xs={{ marginTop: 0 }} style={{ width: "100%", marginTop: 16 }}>
-            <Card bordered={false}>
+            <Card bordered={false} className="art_body">
               <h2 className="tx-c">{art.title}</h2>
               <p className="tx-c fz-6">
                 <Tag color="#108ee9">创建:{dayGet(art.createdAt)}</Tag>
