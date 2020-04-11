@@ -15,6 +15,7 @@ import {
     ReadOutlined,
     BarsOutlined,
     IdcardOutlined,
+    LinkedinOutlined,
     FolderViewOutlined
   } from "@ant-design/icons";
 import EditCategory from '../pages/Category/EditCategory';
@@ -23,6 +24,8 @@ import OtherList from '../pages/Other/OtherList';
 import AboutList from '../pages/About/AboutList';
 import EditOther from '../pages/Other/EditOther';
 import EditAbout from '../pages/About/EditAbout';
+import FriendLinkList from '../pages/FriendLink/FriendLinkList';
+import EditFriendLink from '../pages/FriendLink/EditFriendLink';
 
 export const mainRouter = [
   {
@@ -95,4 +98,14 @@ export const adminRouter = [
   },
   { path: "/admin/about/create", component: EditAbout, isShow: false },
   { path: "/admin/about/edit/:id", component: EditAbout, isShow: false },
+  {
+    path: "/admin/friendlink",
+    component: FriendLinkList,
+    isShow: true,
+    exact:true,
+    title: "友情链接",
+    icon:<LinkedinOutlined />
+  },
+  { path: "/admin/friendlink/create", component: EditFriendLink, isShow: false },
+  { path: "/admin/friendlink/edit/:id", component: EditFriendLink, isShow: false },
 ];

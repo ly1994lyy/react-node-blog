@@ -18,6 +18,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import { setCurrentUser } from "./store/actions/authActions";
 import CategoryList from "./pages/category/CategoryList";
+import Other from "./pages/other/Other";
 
 if (localStorage.usertoken) {
   store.dispatch(setCurrentUser(localStorage.usertoken));
@@ -31,6 +32,7 @@ ReactDOM.render(
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/other" component={Other} />
           <Route path="/category" exact component={Category} />
           <Route path="/category/:id" component={CategoryList} />
           <Route path="/article" exact component={ArticleList} />

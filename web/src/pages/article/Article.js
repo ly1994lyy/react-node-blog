@@ -125,7 +125,7 @@ function Article(props) {
       <Row>
         <Col xs={24} sm={{ span: 14, offset: 4 }}>
           <Card xs={{ marginTop: 0 }} style={{ width: "100%", marginTop: 16 }}>
-            <Card bordered={false} className="art_body">
+            <Card bordered={false}>
               <h2 className="tx-c">{art.title}</h2>
               <p className="tx-c fz-6">
                 <Tag color="#108ee9">创建:{dayGet(art.createdAt)}</Tag>
@@ -148,7 +148,7 @@ function Article(props) {
                   {art.likes.length}
                 </Tag>
               </p>
-              <p dangerouslySetInnerHTML={{ __html: art.body }}></p>
+              <p className="art_body" dangerouslySetInnerHTML={{ __html: art.body }}></p>
               <div className="tx-c"></div>
               {isLike ? (
                 <LikeFilled onClick={cancleLiked} />

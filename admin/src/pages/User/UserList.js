@@ -66,7 +66,7 @@ function UserList() {
   };
 
   return (
-    <Card title="分类管理">
+    <Card title="用户列表">
       <Row justify="space-between" style={{ marginBottom: "15px" }}>
         <Col span={4}>
           <Search

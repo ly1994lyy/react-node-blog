@@ -50,7 +50,7 @@ function Nav(props) {
             >
               博客分类
             </Menu.Item>
-            <Menu.Item key="project" onClick={() => props.history.push("")}>
+            <Menu.Item key="/other" onClick={() => props.history.push("/other")}>
               其他作品
             </Menu.Item>
             <Menu.Item
@@ -91,11 +91,11 @@ function Nav(props) {
             visible={visible}
           >
             <Menu theme="light" mode="vertical">
-              <Menu.Item key="mail">首页</Menu.Item>
-              <Menu.Item key="app">博客列表</Menu.Item>
-              <Menu.Item key="alipay">博客分类</Menu.Item>
-              <Menu.Item key="project">其他作品</Menu.Item>
-              <Menu.Item key="about">关于作者</Menu.Item>
+              <Menu.Item key="/" onClick={() => props.history.push("/")}>首页</Menu.Item>
+              <Menu.Item key="/article" onClick={() => props.history.push("/article")}>博客列表</Menu.Item>
+              <Menu.Item key="/category" onClick={() => props.history.push("/category")}>博客分类</Menu.Item>
+              <Menu.Item key="/other" onClick={() => props.history.push("/other")}>其他作品</Menu.Item>
+              <Menu.Item key="/about" onClick={() => props.history.push("/about")}>关于作者</Menu.Item>
             </Menu>
           </Drawer>
         </Col>

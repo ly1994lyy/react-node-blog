@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import HomeRight from "./HomeRight";
-import { Row, Col, Tag } from "antd";
-import { Card } from "antd";
+import { Row, Col, Tag,Card } from "antd";
 import { LikeFilled } from "@ant-design/icons";
 import { getArt } from "../../api/article";
 import {dayGet} from "../../utils/day"
 
-function HomeBody() {
+function HomeBody(props) {
   const [artList, setArtList] = useState([]);
   useEffect(() => {
     getArt().then(res => {
@@ -45,7 +44,7 @@ function HomeBody() {
                   <p className="blogBody" dangerouslySetInnerHTML={{__html: item.body}}>
                   </p>
                   <div className="tx-c">
-                    <button className="txBtn">阅读全文</button>
+                    <button className="txBtn" onClick={()=>props.history.push(`/article/${item._id}`)}>阅读全文</button>
                   </div>
                 </Card>
               );

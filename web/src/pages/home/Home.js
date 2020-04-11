@@ -1,10 +1,10 @@
 import React from 'react'
 import HomeBody from "../../component/home/HomeBody"
 
-function Home() {
+function Home(props) {
     return (
         <div>
-            <HomeBody />
+            <HomeBody history={props.history} />
         </div>
     )
 }

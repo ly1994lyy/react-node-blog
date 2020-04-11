@@ -13,7 +13,6 @@ const tailLayout = {
 };
 
 function EditOther(props) {
-  const [form] = Form.useForm();
   const [editorState, setEditorState] = useState(null);
   useEffect(() => {
     if (props.match.params.id) {
@@ -77,7 +76,7 @@ function EditOther(props) {
       await createOther({ ...values });
       message.success("添加成功！");
     }
-    props.history.push("/admin/about");
+    props.history.push("/admin/other");
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -98,7 +97,6 @@ function EditOther(props) {
       name="basic"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      form={form}
     >
       <Form.Item
         label="内容"

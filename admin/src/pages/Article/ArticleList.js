@@ -92,7 +92,7 @@ function ArticleList(props) {
   };
 
   return (
-    <Card title="分类管理">
+    <Card title="文章列表">
       <Row justify="space-between" style={{ marginBottom: "15px" }}>
         <Col span={4}>
           <Search

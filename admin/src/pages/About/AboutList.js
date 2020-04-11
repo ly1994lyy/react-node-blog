@@ -51,7 +51,7 @@ function AboutList(props) {
 
 
   return (
-    <Card title="分类管理">
+    <Card title="关于作者">
       <Row justify="space-between" style={{ marginBottom: "15px" }}>
         <Col span={1.5}>
           <Button

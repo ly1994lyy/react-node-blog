@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col,Card } from "antd";
-import { getAbout } from "../../api/auth";
+import { getOther } from "../../api/auth";
 import HomeRight from "../../component/home/HomeRight";
-import '../other/index.scss'
+import './index.scss'
 
-function About() {
+function Other() {
   const [artList, setArtList] = useState([]);
   useEffect(() => {
-    getAbout().then((res) => {
+    getOther().then((res) => {
       setArtList(res.data);
     });
   }, []);
@@ -16,7 +16,7 @@ function About() {
       <Row>
         <Col xs={24} sm={{ span: 14, offset: 4 }}>
           <Card
-            title="关于作者"
+            title="其他作品"
             xs={{ marginTop: 0 }}
             style={{ width: "100%", marginTop: 16 }}
           >
@@ -40,4 +40,4 @@ function About() {
   );
 }
 
-export default About
+export default Other;

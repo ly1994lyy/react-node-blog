@@ -7,6 +7,9 @@ module.exports = (app) => {
   const User = require("../../models/User");
   const Comment = require("../../models/Comment");
   const Like = require("../../models/Like");
+  const About = require("../../models/About")
+  const Other = require("../../models/Other")
+  const FriendLink = require("../../models/FriendLink")
   const authMiddleWare = require("../../middleware/auth")
 
   //分类接口
@@ -60,6 +63,12 @@ module.exports = (app) => {
     }
   });
 
+  //友链接口
+  router.get("/friendlink",async(req,res)=>{
+    const model = await FriendLink.find()
+    res.send(model)
+  })
+
   //评论接口
   router.post("/comment",authMiddleWare(app.get('userKey'),User), async (req, res) => {
     const model = await Comment.create(req.body);
@@ -79,6 +88,19 @@ module.exports = (app) => {
     });
     res.send(model);
   });
+
+  //关于作者接口
+  router.get("/about",async(req,res)=>{
+    const model = await About.find()
+    res.send(model)
+  })
+
+  //其他作品接口
+  router.get('/other',async(req,res)=>{
+    const model = await Other.find()
+    res.send(model)
+  })
+
 
   //用户登录接口
   router.post("/login", async (req, res) => {
