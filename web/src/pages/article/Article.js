@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Row,
-  Col,
   Tag,
   Card,
   Comment,
@@ -14,11 +12,10 @@ import {
 } from "antd";
 import { LikeFilled, LikeOutlined } from "@ant-design/icons";
 import { getArtById } from "../../api/article";
-import { comment, like,cancleLike } from "../../api/auth";
+import { comment, like, cancleLike } from "../../api/auth";
 import { dayGet, dayGetDetail } from "../../utils/day";
-import HomeRight from "../../component/home/HomeRight";
 import { connect } from "react-redux";
-import "./index.scss"
+import "./index.scss";
 
 const { TextArea } = Input;
 
@@ -95,10 +92,10 @@ function Article(props) {
     fetch();
   };
 
-  const cancleLiked =async () => {
-    await cancleLike(props.user.id,props.match.params.id)
-    fetch()
-    setLike(false)
+  const cancleLiked = async () => {
+    await cancleLike(props.user.id, props.match.params.id);
+    fetch();
+    setLike(false);
   };
 
   const handleSubmit = async () => {
@@ -122,64 +119,60 @@ function Article(props) {
 
   return (
     <div>
-      <Row>
-        <Col xs={24} sm={{ span: 14, offset: 4 }}>
-          <Card xs={{ marginTop: 0 }} style={{ width: "100%", marginTop: 16 }}>
-            <Card bordered={false}>
-              <h2 className="tx-c">{art.title}</h2>
-              <p className="tx-c fz-6">
-                <Tag color="#108ee9">创建:{dayGet(art.createdAt)}</Tag>
-                &nbsp;
-                <Tag color="#87d068">更新:{dayGet(art.updatedAt)}</Tag>
-                &nbsp;
-                {art.categories.map((cate) => {
-                  return (
-                    <Tag
-                      key={cate._id}
-                      style={{ marginRight: 5 }}
-                      color={cate.color}
-                    >
-                      分类:{cate.name}
-                    </Tag>
-                  );
-                })}
-                &nbsp;
-                <Tag color="#f50" icon={<LikeFilled />}>
-                  {art.likes.length}
+      <Card xs={{ marginTop: 0 }} style={{ width: "100%", marginTop: 16 }}>
+        <Card bordered={false}>
+          <h2 className="tx-c">{art.title}</h2>
+          <p className="tx-c fz-6">
+            <Tag color="#108ee9">创建:{dayGet(art.createdAt)}</Tag>
+            &nbsp;
+            <Tag color="#87d068">更新:{dayGet(art.updatedAt)}</Tag>
+            &nbsp;
+            {art.categories.map((cate) => {
+              return (
+                <Tag
+                  key={cate._id}
+                  style={{ marginRight: 5 }}
+                  color={cate.color}
+                >
+                  分类:{cate.name}
                 </Tag>
-              </p>
-              <p className="art_body" dangerouslySetInnerHTML={{ __html: art.body }}></p>
-              <div className="tx-c"></div>
-              {isLike ? (
-                <LikeFilled onClick={cancleLiked} />
-              ) : (
-                <LikeOutlined onClick={liked} />
-              )}
+              );
+            })}
+            &nbsp;
+            <Tag color="#f50" icon={<LikeFilled />}>
+              {art.likes.length}
+            </Tag>
+          </p>
+          <p
+            className="art_body"
+            dangerouslySetInnerHTML={{ __html: art.body }}
+          ></p>
+          <div className="tx-c"></div>
+          {isLike ? (
+            <LikeFilled onClick={cancleLiked} />
+          ) : (
+            <LikeOutlined onClick={liked} />
+          )}
 
-              {comments.length > 0 && <CommentList comments={comments} />}
-              <Comment
-                avatar={
-                  <Avatar
-                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                    alt="Han Solo"
-                  />
-                }
-                content={
-                  <Editor
-                    onChange={handleChange}
-                    onSubmit={handleSubmit}
-                    submitting={submitting}
-                    value={value}
-                  />
-                }
+          {comments.length > 0 && <CommentList comments={comments} />}
+          <Comment
+            avatar={
+              <Avatar
+                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                alt="Han Solo"
               />
-            </Card>
-          </Card>
-        </Col>
-        <Col xs={0} sm={{ span: 4, offset: 1 }}>
-          <HomeRight />
-        </Col>
-      </Row>
+            }
+            content={
+              <Editor
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+                submitting={submitting}
+                value={value}
+              />
+            }
+          />
+        </Card>
+      </Card>
     </div>
   );
 }

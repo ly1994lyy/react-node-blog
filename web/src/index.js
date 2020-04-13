@@ -19,6 +19,7 @@ import store from "./store/store";
 import { setCurrentUser } from "./store/actions/authActions";
 import CategoryList from "./pages/category/CategoryList";
 import Other from "./pages/other/Other";
+import HomeBody from "./component/home/HomeBody"
 
 if (localStorage.usertoken) {
   store.dispatch(setCurrentUser(localStorage.usertoken));
@@ -28,7 +29,8 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Route path="/404" component={PageNotFound} />
-      <Nav>
+      <Nav />
+      <HomeBody>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
@@ -39,7 +41,7 @@ ReactDOM.render(
           <Route path="/article/:id" component={Article} />
           <Redirect to="/404" />
         </Switch>
-      </Nav>
+      </HomeBody>
     </Router>
   </Provider>,
   document.getElementById("root")

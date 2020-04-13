@@ -1,7 +1,23 @@
 import React, { useState, Fragment } from "react";
-import { Row, Col, Menu, Drawer, Button, Modal, Form, Input } from "antd";
+import {
+  Row,
+  Col,
+  Menu,
+  Drawer,
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Dropdown,
+} from "antd";
 import { withRouter } from "react-router-dom";
-import { MenuOutlined, UserOutlined, LockOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  UserOutlined,
+  LockOutlined,
+  DownOutlined,
+} from "@ant-design/icons";
 import { connect } from "react-redux";
 import { userLogin, userRegister } from "../../store/actions/authActions";
 import "./index.scss";
@@ -9,7 +25,17 @@ import "./index.scss";
 function Nav(props) {
   const [visible, setVisible] = useState(false);
   const [loginVisible, setLoginVisible] = useState(false);
-  const [registerVisible, setRegisterVisible] = useState(false);
+  const [choose, setChoose] = useState("");
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="0">
+        <p onClick={()=>{
+          localStorage.removeItem("usertoken")
+        }}>登出</p>
+      </Menu.Item>
+    </Menu>
+  );
 
   const showDrawer = () => {
     setVisible(true);
@@ -18,12 +44,16 @@ function Nav(props) {
     setVisible(false);
   };
 
-  const onRegisterFinish = async values => {
-    props.dispatch(userRegister({ ...values }));
-  };
-
-  const onFinish = values => {
-    props.dispatch(userLogin({ ...values }));
+  const onFinish = (values) => {
+    if (choose === "登录") {
+      props.dispatch(userLogin({ ...values }));
+      message.success("登录成功!");
+      setLoginVisible(false);
+    } else {
+      props.dispatch(userRegister({ ...values }));
+      message.success("注册成功!");
+      setLoginVisible(false);
+    }
   };
   const isLogin = props.user;
 
@@ -50,7 +80,10 @@ function Nav(props) {
             >
               博客分类
             </Menu.Item>
-            <Menu.Item key="/other" onClick={() => props.history.push("/other")}>
+            <Menu.Item
+              key="/other"
+              onClick={() => props.history.push("/other")}
+            >
               其他作品
             </Menu.Item>
             <Menu.Item
@@ -60,21 +93,37 @@ function Nav(props) {
               关于作者
             </Menu.Item>
           </Menu>
-          
         </Col>
         <Col xs={0} sm={{ span: 4, offset: 3 }} style={{ lineHeight: "60px" }}>
           {isLogin.isAuthenticated ? (
-            <div>{isLogin.user.username}</div>
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <a
+                className="ant-dropdown-link"
+                onClick={(e) => e.preventDefault()}
+                style={{color:"#eee"}}
+              >
+                {isLogin.user.username} <DownOutlined />
+              </a>
+            </Dropdown>
           ) : (
             <Fragment>
               <Button
                 type="link"
                 style={{ margin: "0 10px" }}
-                onClick={() => setLoginVisible(true)}
+                onClick={() => {
+                  setLoginVisible(true);
+                  setChoose("登录");
+                }}
               >
                 登录
               </Button>
-              <Button type="link" onClick={() => setRegisterVisible(true)}>
+              <Button
+                type="link"
+                onClick={() => {
+                  setLoginVisible(true);
+                  setChoose("注册");
+                }}
+              >
                 注册
               </Button>
             </Fragment>
@@ -91,131 +140,146 @@ function Nav(props) {
             visible={visible}
           >
             <Menu theme="light" mode="vertical">
-              <Menu.Item key="/" onClick={() => props.history.push("/")}>首页</Menu.Item>
-              <Menu.Item key="/article" onClick={() => props.history.push("/article")}>博客列表</Menu.Item>
-              <Menu.Item key="/category" onClick={() => props.history.push("/category")}>博客分类</Menu.Item>
-              <Menu.Item key="/other" onClick={() => props.history.push("/other")}>其他作品</Menu.Item>
-              <Menu.Item key="/about" onClick={() => props.history.push("/about")}>关于作者</Menu.Item>
+              <Menu.Item key="/" onClick={() => props.history.push("/")}>
+                首页
+              </Menu.Item>
+              <Menu.Item
+                key="/article"
+                onClick={() => props.history.push("/article")}
+              >
+                博客列表
+              </Menu.Item>
+              <Menu.Item
+                key="/category"
+                onClick={() => props.history.push("/category")}
+              >
+                博客分类
+              </Menu.Item>
+              <Menu.Item
+                key="/other"
+                onClick={() => props.history.push("/other")}
+              >
+                其他作品
+              </Menu.Item>
+              <Menu.Item
+                key="/about"
+                onClick={() => props.history.push("/about")}
+              >
+                关于作者
+              </Menu.Item>
             </Menu>
           </Drawer>
         </Col>
 
-        {/* 登录框 */}
+        {/* 登录框和注册框 */}
         <Modal
-          title="登录"
+          title={choose}
           visible={loginVisible}
-          onOk={e => setLoginVisible(false)}
-          onCancel={e => setLoginVisible(false)}
+          onOk={(e) => setLoginVisible(false)}
+          onCancel={(e) => setLoginVisible(false)}
         >
-          <Form
-            name="normal_login"
-            className="login-form"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-          >
-            <Form.Item
-              name="username"
-              rules={[
-                { required: true, message: "Please input your Username!" }
-              ]}
+          {choose === "登录" ? (
+            <Form
+              name="normal_login"
+              className="login-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
             >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
-              />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              rules={[
-                { required: true, message: "Please input your Password!" }
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
+              <Form.Item
+                name="username"
+                rules={[
+                  { required: true, message: "Please input your Username!" },
+                ]}
               >
-                登录
-              </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
-
-        {/* 注册框 */}
-        <Modal
-          title="注册"
-          visible={registerVisible}
-          onOk={e => setRegisterVisible(false)}
-          onCancel={e => setRegisterVisible(false)}
-        >
-          <Form
-            name="normal_login"
-            className="login-form"
-            initialValues={{ remember: true }}
-            onFinish={onRegisterFinish}
-          >
-            <Form.Item
-              name="username"
-              rules={[
-                { required: true, message: "Please input your Username!" }
-              ]}
-            >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
-              />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              rules={[
-                { required: true, message: "Please input your Password!" }
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-            <Form.Item
-              name="passwordConfirm"
-              rules={[
-                { required: true, message: "Please input your Password!" }
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Username"
+                />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
               >
-                注册
-              </Button>
-            </Form.Item>
-          </Form>
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                >
+                  登录
+                </Button>
+              </Form.Item>
+            </Form>
+          ) : (
+            <Form
+              name="normal_login"
+              className="login-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+            >
+              <Form.Item
+                name="username"
+                rules={[
+                  { required: true, message: "Please input your Username!" },
+                ]}
+              >
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Username"
+                />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
+              >
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Item>
+              <Form.Item
+                name="passwordConfirm"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
+              >
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                >
+                  注册
+                </Button>
+              </Form.Item>
+            </Form>
+          )}
         </Modal>
       </Row>
-      {props.children}
     </div>
   );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.auth
+    user: state.auth,
   };
 };
 
