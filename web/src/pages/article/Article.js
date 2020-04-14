@@ -16,6 +16,9 @@ import { comment, like, cancleLike } from "../../api/auth";
 import { dayGet, dayGetDetail } from "../../utils/day";
 import { connect } from "react-redux";
 import "./index.scss";
+import Nav from "../../component/nav/Nav"
+import HomeBody from "../../component/home/HomeBody"
+import Foot from "../../component/foot/Foot"
 
 const { TextArea } = Input;
 
@@ -119,6 +122,8 @@ function Article(props) {
 
   return (
     <div>
+      <Nav />
+      <HomeBody>
       <Card xs={{ marginTop: 0 }} style={{ width: "100%", marginTop: 16 }}>
         <Card bordered={false}>
           <h2 className="tx-c">{art.title}</h2>
@@ -173,6 +178,8 @@ function Article(props) {
           />
         </Card>
       </Card>
+      </HomeBody>
+      <Foot />
     </div>
   );
 }

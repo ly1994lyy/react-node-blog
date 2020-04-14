@@ -5,7 +5,7 @@ import { Row, Col } from "antd";
 
 function HomeBody(props) {
   return (
-    <div>
+    <div className="homeBody">
       <Row>
         <Col xs={24} sm={{ span: 14, offset: 4 }}>
           {props.children}

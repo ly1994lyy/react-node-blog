@@ -17,6 +17,7 @@ import {
   UserOutlined,
   LockOutlined,
   DownOutlined,
+  PoweroffOutlined
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { userLogin, userRegister } from "../../store/actions/authActions";
@@ -30,9 +31,13 @@ function Nav(props) {
   const menu = (
     <Menu>
       <Menu.Item key="0">
-        <p onClick={()=>{
-          localStorage.removeItem("usertoken")
-        }}>登出</p>
+        <p
+          onClick={() => {
+            localStorage.removeItem("usertoken");
+          }}
+        >
+          登出
+        </p>
       </Menu.Item>
     </Menu>
   );
@@ -64,7 +69,11 @@ function Nav(props) {
           <h1>Code Life</h1>
         </Col>
         <Col xs={0} sm={{ span: 10 }}>
-          <Menu theme="dark" mode="horizontal">
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={[props.path]}
+          >
             <Menu.Item key="/" onClick={() => props.history.push("/")}>
               首页
             </Menu.Item>
@@ -100,7 +109,7 @@ function Nav(props) {
               <a
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
-                style={{color:"#eee"}}
+                style={{ color: "#eee" }}
               >
                 {isLogin.user.username} <DownOutlined />
               </a>
@@ -131,7 +140,6 @@ function Nav(props) {
         </Col>
         <Col xs={{ span: 2, offset: 2 }} sm={0}>
           <MenuOutlined className="meauBtn" onClick={showDrawer} />
-
           <Drawer
             title="Code Life"
             placement="right"
@@ -139,7 +147,11 @@ function Nav(props) {
             onClose={onClose}
             visible={visible}
           >
-            <Menu theme="light" mode="vertical">
+            <Menu
+              theme="light"
+              mode="vertical"
+              defaultSelectedKeys={[props.path]}
+            >
               <Menu.Item key="/" onClick={() => props.history.push("/")}>
                 首页
               </Menu.Item>
@@ -168,6 +180,43 @@ function Nav(props) {
                 关于作者
               </Menu.Item>
             </Menu>
+            {isLogin.isAuthenticated ? (
+              <div className="drawerFoot">
+                <span className="loginUser">{isLogin.user.username}</span>
+                <Button
+                  type="primary"
+                  danger
+                  icon={<PoweroffOutlined />}
+                  onClick={() => {
+                    localStorage.removeItem("usertoken");
+                  }}
+                >
+                  注销
+                </Button>
+              </div>
+            ) : (
+              <div className="drawerFoot">
+                <Button
+                  type="link"
+                  style={{ margin: "0 10px" }}
+                  onClick={() => {
+                    setLoginVisible(true);
+                    setChoose("登录");
+                  }}
+                >
+                  登录
+                </Button>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    setLoginVisible(true);
+                    setChoose("注册");
+                  }}
+                >
+                  注册
+                </Button>
+              </div>
+            )}
           </Drawer>
         </Col>
 

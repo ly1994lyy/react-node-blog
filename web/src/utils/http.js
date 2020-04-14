@@ -15,16 +15,18 @@ http.interceptors.response.use(
         message: "sorry",
         description: "您得先登录",
       });
+    } else {
+      message.error(err.response.data.message);
     }
-    message.error(err.response.data.message);
+
     return Promise.reject(err);
   }
 );
 
 http.interceptors.request.use(
   (config) => {
-    if(localStorage.usertoken){
-      config.headers.Authorization ='Bearer ' + localStorage.usertoken
+    if (localStorage.usertoken) {
+      config.headers.Authorization = "Bearer " + localStorage.usertoken;
     }
     return config;
   },

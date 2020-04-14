@@ -13,7 +13,7 @@ module.exports = (app) => {
   const authMiddleWare = require("../../middleware/auth")
 
   //分类接口
-  router.get("/categories", async (req, res) => {
+  router.get("/categories",async (req, res) => {
     const model = await Category.find();
     res.send(model);
   });

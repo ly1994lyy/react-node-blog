@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Card } from "antd";
 import { getOther } from "../../api/auth";
 import "./index.scss";
+import Nav from "../../component/nav/Nav"
+import HomeBody from "../../component/home/HomeBody"
+import Foot from "../../component/foot/Foot"
 
-function Other() {
+function Other(props) {
   const [artList, setArtList] = useState([]);
   useEffect(() => {
     getOther().then((res) => {
@@ -12,6 +15,8 @@ function Other() {
   }, []);
   return (
     <div>
+      <Nav path={props.location.pathname} />
+      <HomeBody>
       <Card
         title="其他作品"
         xs={{ marginTop: 0 }}
@@ -28,6 +33,8 @@ function Other() {
           );
         })}
       </Card>
+      </HomeBody>
+      <Foot />
     </div>
   );
 }

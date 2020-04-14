@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Tag, Card } from "antd";
 import { getCate } from "../../api/category";
 import "./index.scss";
+import Nav from "../../component/nav/Nav"
+import HomeBody from "../../component/home/HomeBody"
+import Foot from "../../component/foot/Foot"
 
 function Category(props) {
   const [cateList, setCateList] = useState([]);
@@ -12,6 +15,8 @@ function Category(props) {
   }, []);
   return (
     <div>
+      <Nav path={props.location.pathname} />
+      <HomeBody>
       <Card
         title="博客分类"
         xs={{ marginTop: 0 }}
@@ -33,6 +38,8 @@ function Category(props) {
           })}
         </Row>
       </Card>
+      </HomeBody>
+      <Foot />
     </div>
   );
 }

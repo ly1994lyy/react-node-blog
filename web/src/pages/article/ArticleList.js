@@ -4,6 +4,9 @@ import { Card } from "antd";
 import { LikeFilled } from "@ant-design/icons";
 import { getArt } from "../../api/article";
 import { dayGet } from "../../utils/day";
+import Nav from "../../component/nav/Nav"
+import HomeBody from "../../component/home/HomeBody"
+import Foot from "../../component/foot/Foot"
 
 function ArticleList(props) {
   const [artList, setArtList] = useState([]);
@@ -14,6 +17,8 @@ function ArticleList(props) {
   }, []);
   return (
     <div>
+      <Nav path={props.location.pathname} />
+      <HomeBody>
       <Card
         title="博客列表"
         xs={{ marginTop: 0 }}
@@ -60,6 +65,8 @@ function ArticleList(props) {
           );
         })}
       </Card>
+      </HomeBody>
+      <Foot />
     </div>
   );
 }

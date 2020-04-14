@@ -3,6 +3,8 @@ import { Tag, Card } from "antd";
 import { LikeFilled } from "@ant-design/icons";
 import { getCateById } from "../../api/category";
 import { dayGet } from "../../utils/day";
+import Nav from "../../component/nav/Nav"
+import HomeBody from "../../component/home/HomeBody"
 
 function CategoryList(props) {
   const [artList, setArtList] = useState([]);
@@ -12,9 +14,11 @@ function CategoryList(props) {
       setArtList(res.data.articlelist);
       setTitle("分类:" + res.data.name);
     });
-  }, []);
+  }, [props.match.params.id]);
   return (
     <div>
+      <Nav />
+      <HomeBody>
       <Card
         title={title}
         xs={{ marginTop: 0 }}
@@ -49,6 +53,7 @@ function CategoryList(props) {
           );
         })}
       </Card>
+      </HomeBody>
     </div>
   );
 }

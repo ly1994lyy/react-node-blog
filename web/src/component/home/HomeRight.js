@@ -81,7 +81,6 @@ function HomeRight() {
           );
         })}
       </Card>
-      <img src="../../images/qq.png" alt=""/>
       <Modal
           title={choose}
           visible={visible}

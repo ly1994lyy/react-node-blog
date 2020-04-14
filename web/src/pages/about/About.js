@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Card } from "antd";
 import { getAbout } from "../../api/auth";
 import "../other/index.scss";
+import Nav from "../../component/nav/Nav"
+import HomeBody from "../../component/home/HomeBody"
+import Foot from "../../component/foot/Foot"
 
-function About() {
+function About(props) {
   const [artList, setArtList] = useState([]);
   useEffect(() => {
     getAbout().then((res) => {
@@ -12,6 +15,8 @@ function About() {
   }, []);
   return (
     <div>
+      <Nav path={props.location.pathname} />
+      <HomeBody>
       <Card
         title="关于作者"
         xs={{ marginTop: 0 }}
@@ -28,6 +33,8 @@ function About() {
           );
         })}
       </Card>
+      </HomeBody>
+      <Foot />
     </div>
   );
 }
