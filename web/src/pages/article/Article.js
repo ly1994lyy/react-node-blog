@@ -128,9 +128,9 @@ function Article(props) {
         <Card bordered={false}>
           <h2 className="tx-c">{art.title}</h2>
           <p className="tx-c fz-6">
-            <Tag color="#108ee9">创建:{dayGet(art.createdAt)}</Tag>
+            <Tag color="#108ee9">创建:{dayGet(art.created)}</Tag>
             &nbsp;
-            <Tag color="#87d068">更新:{dayGet(art.updatedAt)}</Tag>
+            <Tag color="#87d068">更新:{dayGet(art.updated)}</Tag>
             &nbsp;
             {art.categories.map((cate) => {
               return (

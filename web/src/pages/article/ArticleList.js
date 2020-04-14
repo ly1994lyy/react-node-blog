@@ -29,9 +29,9 @@ function ArticleList(props) {
             <Card key={item._id} bordered={false}>
               <h2 className="tx-c">{item.title}</h2>
               <p className="tx-c fz-6">
-                <Tag color="#108ee9">创建:{dayGet(item.createdAt)}</Tag>
+                <Tag color="#108ee9">创建:{dayGet(item.created)}</Tag>
                 &nbsp;
-                <Tag color="#87d068">更新:{dayGet(item.updatedAt)}</Tag>
+                <Tag color="#87d068">更新:{dayGet(item.updated)}</Tag>
                 &nbsp;
                 {item.categories.map((cate) => {
                   return (
