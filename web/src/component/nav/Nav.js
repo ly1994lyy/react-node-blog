@@ -8,7 +8,6 @@ import {
   Modal,
   Form,
   Input,
-  message,
   Dropdown,
 } from "antd";
 import { withRouter } from "react-router-dom";
@@ -52,11 +51,9 @@ function Nav(props) {
   const onFinish = (values) => {
     if (choose === "登录") {
       props.dispatch(userLogin({ ...values }));
-      message.success("登录成功!");
       setLoginVisible(false);
     } else {
       props.dispatch(userRegister({ ...values }));
-      message.success("注册成功!");
       setLoginVisible(false);
     }
   };
