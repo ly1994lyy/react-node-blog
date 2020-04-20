@@ -11,7 +11,7 @@ function Home(props) {
   const [artList, setArtList] = useState([]);
   useEffect(() => {
     getArt().then((res) => {
-      const list = res.data.filter((item) => {
+      const list = res.data.model.filter((item) => {
         return item.isHot === true;
       });
       setArtList(list);
@@ -38,7 +38,7 @@ function Home(props) {
                       <Tag
                         key={cate._id}
                         style={{ marginRight: 5 }}
-                        color="#2db7f5"
+                        color={cate.color}
                       >
                         分类:{cate.name}
                       </Tag>

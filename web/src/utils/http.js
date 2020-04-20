@@ -1,12 +1,17 @@
 import axios from "axios";
 import { notification, message } from "antd";
+import NProgress from "nprogress"
+import "nprogress/nprogress.css"
 
 const http = axios.create({
-  baseURL: "http://localhost:4000/web/api",
+  baseURL: process.env.REACT_APP_API_URL || '/web/api',
+  //baseURL: "http://localhost:4000/web/api",
 });
 
+//响应拦截器
 http.interceptors.response.use(
   (res) => {
+    NProgress.done();
     return res;
   },
   (err) => {
@@ -23,8 +28,10 @@ http.interceptors.response.use(
   }
 );
 
+//请求拦截器
 http.interceptors.request.use(
   (config) => {
+    NProgress.start();
     if (localStorage.usertoken) {
       config.headers.Authorization = "Bearer " + localStorage.usertoken;
     }

@@ -3,6 +3,7 @@ import { Form, Button, message } from "antd";
 import { createOther, getOtherById, putOther } from "../../api/other";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
+import { imgUrl } from "../../utils/config";
 
 const layout = {
   labelCol: { span: 4 },
@@ -24,7 +25,7 @@ function EditOther(props) {
 
   //富文本媒体上传设置
   const myUploadFn = (param) => {
-    const serverURL = "http://localhost:4000/admin/api/upload";
+    const serverURL = imgUrl;
     const xhr = new XMLHttpRequest();
     const fd = new FormData();
 

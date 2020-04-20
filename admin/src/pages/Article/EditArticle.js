@@ -4,6 +4,7 @@ import { createArticle, getArticleById, putArticle } from "../../api/article";
 import { getCategory } from "../../api/category";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
+import { imgUrl } from "../../utils/config";
 
 const { Option } = Select;
 const layout = {
@@ -32,7 +33,7 @@ function EditArticle(props) {
 
   //富文本媒体上传设置
   const myUploadFn = (param) => {
-    const serverURL = "http://localhost:4000/admin/api/upload";
+    const serverURL = imgUrl;
     const xhr = new XMLHttpRequest();
     const fd = new FormData();
 

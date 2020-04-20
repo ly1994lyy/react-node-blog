@@ -3,6 +3,7 @@ import { Form, Button, message } from "antd";
 import { createAbout, getAboutById, putAbout } from "../../api/about";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
+import { imgUrl } from "../../utils/config";
 
 const layout = {
   labelCol: { span: 4 },
@@ -25,7 +26,7 @@ function EditAbout(props) {
 
   //富文本媒体上传设置
   const myUploadFn = (param) => {
-    const serverURL = "http://localhost:4000/admin/api/upload";
+    const serverURL = imgUrl;
     const xhr = new XMLHttpRequest();
     const fd = new FormData();
 
@@ -35,7 +36,7 @@ function EditAbout(props) {
       param.success({
         url: JSON.parse(xhr.responseText).url,
         meta: {
-          id: 'img' + Math.random()*10,
+          id: "img" + Math.random() * 10,
           title: "上传文件",
           alt: "上传文件",
           loop: true, // 指定音视频是否循环播放
@@ -121,4 +122,4 @@ function EditAbout(props) {
   );
 }
 
-export default EditAbout
+export default EditAbout;
