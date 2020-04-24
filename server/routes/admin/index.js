@@ -182,6 +182,7 @@ module.exports = (app) => {
   app.post("/admin/api/upload", upload.single("file"), async (req, res) => {
     const file = req.file;
     file.url = `http://localhost:4000/uploads/${file.filename}`;
+    //file.url = `https://www.codelife.icu/uploads/${file.filename}`;
     res.send(file);
   });
 
