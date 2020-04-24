@@ -16,9 +16,9 @@ import { comment, like, cancleLike } from "../../api/auth";
 import { dayGet, dayGetDetail } from "../../utils/day";
 import { connect } from "react-redux";
 import "./index.scss";
-import Nav from "../../component/nav/Nav"
-import HomeBody from "../../component/home/HomeBody"
-import Foot from "../../component/foot/Foot"
+import Nav from "../../component/nav/Nav";
+import HomeBody from "../../component/home/HomeBody";
+import Foot from "../../component/foot/Foot";
 
 const { TextArea } = Input;
 
@@ -124,60 +124,60 @@ function Article(props) {
     <div>
       <Nav />
       <HomeBody>
-      <Card xs={{ marginTop: 0 }} style={{ width: "100%", marginTop: 16 }}>
-        <Card bordered={false}>
-          <h2 className="tx-c">{art.title}</h2>
-          <p className="tx-c fz-6">
-            <Tag color="#108ee9">创建:{dayGet(art.created)}</Tag>
-            &nbsp;
-            <Tag color="#87d068">更新:{dayGet(art.updated)}</Tag>
-            &nbsp;
-            {art.categories.map((cate) => {
-              return (
-                <Tag
-                  key={cate._id}
-                  style={{ marginRight: 5 }}
-                  color={cate.color}
-                >
-                  分类:{cate.name}
-                </Tag>
-              );
-            })}
-            &nbsp;
-            <Tag color="#f50" icon={<LikeFilled />}>
-              {art.likes.length}
-            </Tag>
-          </p>
-          <p
-            className="art_body"
-            dangerouslySetInnerHTML={{ __html: art.body }}
-          ></p>
-          <div className="tx-c"></div>
-          {isLike ? (
-            <LikeFilled onClick={cancleLiked} />
-          ) : (
-            <LikeOutlined onClick={liked} />
-          )}
+        <Card>
+          <Card bordered={false}>
+            <h2 className="tx-c">{art.title}</h2>
+            <p className="tx-c fz-6">
+              <Tag color="#108ee9">创建:{dayGet(art.created)}</Tag>
+              &nbsp;
+              <Tag color="#87d068">更新:{dayGet(art.updated)}</Tag>
+              &nbsp;
+              {art.categories.map((cate) => {
+                return (
+                  <Tag
+                    key={cate._id}
+                    style={{ marginRight: 5 }}
+                    color={cate.color}
+                  >
+                    分类:{cate.name}
+                  </Tag>
+                );
+              })}
+              &nbsp;
+              <Tag color="#f50" icon={<LikeFilled />}>
+                {art.likes.length}
+              </Tag>
+            </p>
+            <p
+              className="art_body"
+              dangerouslySetInnerHTML={{ __html: art.body }}
+            ></p>
+            <div className="tx-c"></div>
+            {isLike ? (
+              <LikeFilled onClick={cancleLiked} />
+            ) : (
+              <LikeOutlined onClick={liked} />
+            )}
 
-          {comments.length > 0 && <CommentList comments={comments} />}
-          <Comment
-            avatar={
-              <Avatar
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                alt="Han Solo"
-              />
-            }
-            content={
-              <Editor
-                onChange={handleChange}
-                onSubmit={handleSubmit}
-                submitting={submitting}
-                value={value}
-              />
-            }
-          />
+            {comments.length > 0 && <CommentList comments={comments} />}
+            <Comment
+              avatar={
+                <Avatar
+                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                  alt="Han Solo"
+                />
+              }
+              content={
+                <Editor
+                  onChange={handleChange}
+                  onSubmit={handleSubmit}
+                  submitting={submitting}
+                  value={value}
+                />
+              }
+            />
+          </Card>
         </Card>
-      </Card>
       </HomeBody>
       <Foot />
     </div>

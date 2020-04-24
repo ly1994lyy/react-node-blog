@@ -5,7 +5,7 @@ import { getArt } from "../../api/article";
 import { dayGet } from "../../utils/day";
 import Nav from "../../component/nav/Nav";
 import HomeBody from "../../component/home/HomeBody";
-import Foot from "../../component/foot/Foot"
+import Foot from "../../component/foot/Foot";
 
 function Home(props) {
   const [artList, setArtList] = useState([]);
@@ -21,11 +21,7 @@ function Home(props) {
     <div>
       <Nav path={props.location.pathname} />
       <HomeBody>
-        <Card
-          title="精选博客"
-          xs={{ marginTop: 0 }}
-          style={{ width: "100%", marginTop: 16 }}
-        >
+        <Card title="精选博客">
           {artList.map((item) => {
             return (
               <Card key={item._id} bordered={false}>

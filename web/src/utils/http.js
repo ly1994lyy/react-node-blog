@@ -5,7 +5,6 @@ import "nprogress/nprogress.css"
 
 const http = axios.create({
   baseURL: process.env.REACT_APP_API_URL || '/web/api',
-  //baseURL: "http://localhost:4000/web/api",
 });
 
 //响应拦截器
@@ -15,6 +14,7 @@ http.interceptors.response.use(
     return res;
   },
   (err) => {
+    NProgress.done();
     if (err.response.status === 401) {
       notification.open({
         message: "sorry",

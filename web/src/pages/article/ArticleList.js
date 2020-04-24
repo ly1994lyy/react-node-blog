@@ -27,11 +27,7 @@ function ArticleList(props) {
     <div>
       <Nav path={props.location.pathname} />
       <HomeBody>
-        <Card
-          title="博客列表"
-          xs={{ marginTop: 0 }}
-          style={{ width: "100%", marginTop: 16 }}
-        >
+        <Card title="博客列表">
           {artList.map((item) => {
             return (
               <Card key={item._id} bordered={false}>

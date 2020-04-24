@@ -63,7 +63,7 @@ function Nav(props) {
     <div>
       <Row className="navBar">
         <Col xs={20} sm={{ span: 5, offset: 1 }}>
-          <h1>Code Life</h1>
+          <h1 onClick={()=>props.history.push('/')}>Code Life</h1>
         </Col>
         <Col xs={0} sm={{ span: 10 }}>
           <Menu
