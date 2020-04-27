@@ -7,8 +7,9 @@ function HomeBody(props) {
     <div className="homeBody">
       <Row>
         <Col
-          xs={{ span: 24, marginTop: 0, marginBottom: 0 }}
-          sm={{ span: 14, offset: 4, marginTop: 16, marginBottom: 16 }}
+          xs={24}
+          sm={{ span: 14, offset: 4 }}
+          style={{ marginBottom: "16px", marginTop: "16px" }}
         >
           {props.children}
         </Col>

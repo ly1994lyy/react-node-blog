@@ -10,7 +10,9 @@ function Index(props) {
   return (
     <Layout>
       <Header className="header">
-        <div className="logo" />
+        <div className="logo">
+          <h1>Code Life后台管理</h1>
+        </div>
       </Header>
       <Layout>
         <Sider width={200} className="site-layout-background">
