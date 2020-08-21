@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "client": "npm start --prefix client",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon ./server.js",
+    "dev": "concurrently \"npm run serve\" \"npm run client\""
+  },
   "dependencies": {
-    "axios": "^0.19.2",
-    "bcrypt": "^4.0.1",
+    "axios": "^0.20.0",
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "express": "^5.0.0-alpha.8",
     "http-assert": "^1.4.1",

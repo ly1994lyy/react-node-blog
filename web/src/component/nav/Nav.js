@@ -103,8 +103,7 @@ function Nav(props) {
         <Col xs={0} sm={{ span: 4, offset: 3 }} style={{ lineHeight: "60px" }}>
           {isLogin.isAuthenticated ? (
             <Dropdown overlay={menu} trigger={["click"]}>
-              <a
-                className="ant-dropdown-link"
+              <a className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
                 style={{ color: "#eee" }}
               >

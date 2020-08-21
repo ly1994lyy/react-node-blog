@@ -9,7 +9,6 @@ import Foot from "../../component/foot/Foot";
 
 function ArticleList(props) {
   const [artList, setArtList] = useState([]);
-  const [page, setPage] = useState([]);
   const [pageSum, setPageSum] = useState(0);
   const fetch = async (page) => {
     const res = await getArt({ page, pageNum: 5 });
