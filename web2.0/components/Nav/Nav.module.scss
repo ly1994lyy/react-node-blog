@@ -1,0 +1,14 @@
+.navbox{
+    width: 100vw;
+    .navmenu{
+        margin-left: 230px;
+        display: flex;
+        li{
+            margin:2px 10px;
+            &:hover{
+                color:red;
+                border-bottom: 1px solid gray;
+            }
+        }
+    }
+}
