@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Body from "../components/Body";
+import { Container } from "@material-ui/core";
 
 
 export default function Home() {
@@ -22,7 +23,12 @@ export default function Home() {
           />
         </Head>
 
-        <Body />
+      <Body>
+        <Container>
+          woshi
+        </Container>
+      </Body>
+      
       </div>
   );
 }
