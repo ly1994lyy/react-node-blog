@@ -9,3 +9,10 @@ a{
 li{
   list-style: none;
 }
+
+.N01TextInfoContent-body-8{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
