@@ -5,9 +5,9 @@ export const login = (data)=>{
 }
 
 export const getUser = (params)=>{
-    return get('/rest/user',params)
+    return get('/user',params)
 }
 
 export const delUser = (id)=>{
-    return del(`/rest/user/${id}`)
+    return del(`/user/${id}`)
 }
