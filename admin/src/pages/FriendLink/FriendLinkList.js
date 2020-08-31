@@ -45,7 +45,7 @@ function FriendLinkList(props) {
                 const { data } = await delFriendLink(record._id);
                 message.success(data.message);
                 const res = await getFriendLink();
-                setDataList(res.data);
+                setDataList(res.data.data);
               }}
             >
               <Tag color="#f50">删除</Tag>
@@ -66,7 +66,7 @@ function FriendLinkList(props) {
   const [dataList, setDataList] = useState([]);
   useEffect(() => {
     getFriendLink().then(res => {
-      setDataList(res.data);
+      setDataList(res.data.data);
     });
   }, []);
 

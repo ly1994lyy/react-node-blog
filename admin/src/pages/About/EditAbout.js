@@ -86,10 +86,6 @@ function EditAbout(props) {
     console.log("Failed:", errorInfo);
   };
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
-
   const handleEditorChange = (e) => {
     setEditorState(e);
   };

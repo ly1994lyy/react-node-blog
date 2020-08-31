@@ -1,5 +1,9 @@
-import http from "../utils/http"
+import { get } from '../utils/http'
 
-export const getCate=()=>{
-    return http.get('categories')
+export const getCate = (params)=>{
+    return get('/categories',params)
+}
+
+export const getCateById = (id)=>{
+    return get(`/categories/${id}`)
 }

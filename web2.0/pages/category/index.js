@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import Main from '../../components/Main'
 import Chip from '@material-ui/core/Chip'
 import Avatar from '@material-ui/core/Avatar'
-import axios from 'axios'
+import { getCate } from '../../api/category'
 
 function index({data}) {
     return (
@@ -21,10 +21,12 @@ function index({data}) {
 }
 
 export async function getStaticProps() {
-    const {data} = await axios.get('http://localhost:4000/web/api/categories')
+    const {data} = await getCate({
+        query:{limit:100}
+    })
     return {
       props: {
-        data
+        data:data.data
       },
     }
   }

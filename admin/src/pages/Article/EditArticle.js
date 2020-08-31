@@ -22,12 +22,12 @@ function EditArticle(props) {
   useEffect(() => {
     if (props.match.params.id) {
       getArticleById(props.match.params.id).then((res) => {
-        form.setFieldsValue({ ...res.data });
+        form.setFieldsValue({ ...res.data});
         setEditorState(BraftEditor.createEditorState(res.data.body));
       });
     }
     getCategory().then((res) => {
-      setCateList(res.data);
+      setCateList(res.data.data);
     });
   }, []);
 

@@ -42,7 +42,7 @@ function ArticleList(props) {
         return <Switch checked={record.isHot} onChange={async checked=>{
           await putArticle(record._id,{isHot:checked});
           const res = await getArticle();
-          setDataList(res.data)
+          setDataList(res.data.data)
         }} />;
       }
     },
@@ -58,10 +58,10 @@ function ArticleList(props) {
               cancelText="否"
               onCancel={() => message.error("取消删除")}
               onConfirm={async () => {
-                const { data } = await delArticle(record._id);
-                message.success(data.message);
+                await delArticle(record._id);
+                message.success('删除成功');
                 const res = await getArticle();
-                setDataList(res.data);
+                setDataList(res.data.data);
               }}
             >
               <Tag color="#f50">删除</Tag>
@@ -81,14 +81,17 @@ function ArticleList(props) {
   ];
   const [dataList, setDataList] = useState([]);
   useEffect(() => {
-    getArticle().then(res => {
-      setDataList(res.data);
+    getArticle({
+        query:{populate:'categories',limit:100}
+      }
+    ).then(res => {
+      setDataList(res.data.data);
     });
   }, []);
 
   const searchCate = async values => {
     const res = await getArticle({ searchWord: values });
-    setDataList(res.data);
+    setDataList(res.data.data);
   };
 
   return (

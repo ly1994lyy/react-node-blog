@@ -45,7 +45,7 @@ function AboutList(props) {
   const [dataList, setDataList] = useState([]);
   useEffect(() => {
     getAbout().then(res => {
-      setDataList(res.data);
+      setDataList(res.data.data);
     });
   }, []);
 

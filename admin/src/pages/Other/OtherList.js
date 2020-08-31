@@ -45,7 +45,7 @@ function OtherList(props) {
   const [dataList, setDataList] = useState([]);
   useEffect(() => {
     getOther().then(res => {
-      setDataList(res.data);
+      setDataList(res.data.data);
     });
   }, []);
 

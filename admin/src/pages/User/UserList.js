@@ -54,7 +54,7 @@ function UserList() {
 
   const fetchUser = async (searchValue)=>{
       const res = await getUser(searchValue)
-      setUserList(res.data)
+      setUserList(res.data.data)
   }
   useEffect(() => {
     fetchUser()
@@ -62,7 +62,7 @@ function UserList() {
 
   const searchUser= async values => {
     const res = await getUser({ username: values });
-    setUserList(res.data);
+    setUserList(res.data.data);
   };
 
   return (

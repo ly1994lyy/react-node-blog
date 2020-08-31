@@ -77,13 +77,13 @@ function CategoryList(props) {
   const [dataList, setDataList] = useState([]);
   useEffect(() => {
     getCategory().then(res => {
-      setDataList(res.data);
+      setDataList(res.data.data);
     });
   }, []);
 
   const searchCate = async values => {
     const res = await getCategory({ searchWord: values });
-    setDataList(res.data);
+    setDataList(res.data.data);
   };
 
   return (

@@ -21,6 +21,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PersonIcon from '@material-ui/icons/Person';
 import {useRouter} from 'next/router'
+import Head from "next/head";
 
 const drawerWidth = 200;
 
@@ -72,6 +73,23 @@ function Main(props) {
 
   const drawer = (
     <div>
+      <Head>
+        <title>Code Life</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=0"
+        ></meta>
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+      </Head>
+
       <div className={classes.toolbar} />
       <Divider />
       <List>
@@ -103,13 +121,13 @@ function Main(props) {
           <ListItemIcon>
             <PeopleAltIcon />
           </ListItemIcon>
-          <ListItemText primary="友链" />
+          <ListItemText primary="友链" onClick={()=>router.push('/friendlink')} />
         </ListItem>
         <ListItem button>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          <ListItemText primary="作者" />
+          <ListItemText primary="作者" onClick={()=>router.push('/about')} />
         </ListItem>
       </List>
     </div>

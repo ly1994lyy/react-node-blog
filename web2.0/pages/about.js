@@ -1,12 +1,24 @@
 import React from 'react'
-import Body from '../components/Body'
+import Main from '../components/Main'
+import { getAbout } from '../api/about'
 
-function about() {
+function about({data}) {
   return (
-    <div>
-      <Body>我是about</Body>
-    </div>
-  );
+    <Main>
+      <p dangerouslySetInnerHTML={{__html:data.body}}></p>
+    </Main>
+  )
 }
 
 export default about
+
+
+export async function getStaticProps(){
+    const res = await getAbout()
+    const data = res.data.data[0]
+    return {
+      props:{
+        data,
+      }
+    }
+}
