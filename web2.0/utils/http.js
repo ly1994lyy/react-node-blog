@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Alert from '@material-ui/lab/Alert'
 
 const http = axios.create({
     baseURL:'http://localhost:3009'
@@ -12,6 +13,9 @@ http.interceptors.request.use(config=>{
 
 
 http.interceptors.response.use(res=>{
+    if(res.status === '401'){
+        return <Alert severity="error">对不起，需要您先登录呢~</Alert>
+    }
     return res
 },err=>{
     return Promise.reject(err)

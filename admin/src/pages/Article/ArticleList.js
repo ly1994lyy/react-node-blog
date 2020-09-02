@@ -60,7 +60,9 @@ function ArticleList(props) {
               onConfirm={async () => {
                 await delArticle(record._id);
                 message.success('删除成功');
-                const res = await getArticle();
+                const res = await getArticle({
+                  query:{populate:'categories',limit:100}
+                });
                 setDataList(res.data.data);
               }}
             >

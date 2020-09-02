@@ -22,6 +22,7 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PersonIcon from '@material-ui/icons/Person';
 import {useRouter} from 'next/router'
 import Head from "next/head";
+import { Dialog, DialogTitle, DialogContent, TextField } from "@material-ui/core";
 
 const drawerWidth = 200;
 
@@ -65,11 +66,24 @@ function Main(props) {
   const { window } = props;
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [authOpen,setAuthOpen] = useState(false)
   const router = useRouter()
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleOpenAuth = ()=>{
+    setAuthOpen(true)
+  }
+
+  const handleCloseAuth = ()=>{
+    setAuthOpen(false)
+  }
+
+  const submitVal= (val)=>{
+    console.log(val);
+  }
 
   const drawer = (
     <div>
@@ -115,7 +129,7 @@ function Main(props) {
           <ListItemIcon>
             <TimerIcon />
           </ListItemIcon>
-          <ListItemText primary="归档" />
+          <ListItemText primary="归档" onClick={()=>router.push('/time')} />
         </ListItem>
         <ListItem button>
           <ListItemIcon>
@@ -153,7 +167,7 @@ function Main(props) {
           <Typography variant="h6" className={classes.title}>
             Code Life
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={handleOpenAuth}>Login</Button>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
@@ -190,6 +204,17 @@ function Main(props) {
         <div className={classes.toolbar} />
         {props.children}
       </main>
+
+      <Dialog open={authOpen} onClose={handleCloseAuth}>
+        <DialogTitle>登录</DialogTitle>
+        <DialogContent>
+          <form>
+            <TextField id="username" label="姓名" name="username" margin="dense" fullWidth></TextField>
+            <TextField id="password" type="password" label="密码" password="password" margin="dense" fullWidth></TextField>
+            <Button type="button" onClick={submitVal}>提交</Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

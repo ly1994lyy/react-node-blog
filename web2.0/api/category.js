@@ -4,6 +4,6 @@ export const getCate = (params)=>{
     return get('/categories',params)
 }
 
-export const getCateById = (id)=>{
-    return get(`/categories/${id}`)
+export const getCateById = (id,params)=>{
+    return get(`/categories/${id}`,params)
 }
