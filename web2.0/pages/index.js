@@ -11,7 +11,7 @@ export const ArticleList = React.memo(function NewsCard({ articles }) {
       <Grid container>
         {articles.map((item) => {
           return (
-            <ArtList article={item}></ArtList>
+            <ArtList article={item} key={item._id}></ArtList>
           );
         })}
       </Grid>

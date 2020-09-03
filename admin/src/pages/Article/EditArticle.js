@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, message, Select } from "antd";
+import { Form, Input, Button, message, Select, Upload } from "antd";
 import { createArticle, getArticleById, putArticle } from "../../api/article";
 import { getCategory } from "../../api/category";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
 import { imgUrl } from "../../utils/config";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 const layout = {
@@ -19,10 +20,13 @@ function EditArticle(props) {
   const [form] = Form.useForm();
   const [cateList, setCateList] = useState([]);
   const [editorState, setEditorState] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (props.match.params.id) {
       getArticleById(props.match.params.id).then((res) => {
-        form.setFieldsValue({ ...res.data});
+        form.setFieldsValue({ ...res.data });
+        setImageUrl(res.data.img);
         setEditorState(BraftEditor.createEditorState(res.data.body));
       });
     }
@@ -43,7 +47,7 @@ function EditArticle(props) {
       param.success({
         url: JSON.parse(xhr.responseText).url,
         meta: {
-          id: 'img' + Math.random()*10,
+          id: "img" + Math.random() * 10,
           title: "上传文件",
           alt: "上传文件",
           loop: true, // 指定音视频是否循环播放
@@ -80,10 +84,10 @@ function EditArticle(props) {
     values.body = editorState.toHTML();
     console.log(values);
     if (props.match.params.id) {
-      await putArticle(props.match.params.id, { ...values });
+      await putArticle(props.match.params.id, { ...values, img: imageUrl });
       message.success("修改文章成功！");
     } else {
-      await createArticle({ ...values });
+      await createArticle({ ...values, img: imageUrl });
       message.success("添加文章成功！");
     }
     props.history.push("/admin/article");
@@ -94,9 +98,24 @@ function EditArticle(props) {
     console.log("Failed:", errorInfo);
   };
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div className="ant-upload-text">Upload</div>
+    </div>
+  );
+
+  const handleChange = (info) => {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === "done") {
+      // Get this url from response in real world.
+      setLoading(false);
+      setImageUrl(info.file.response.url);
+    }
+  };
 
   const handleEditorChange = (e) => {
     setEditorState(e);
@@ -121,12 +140,7 @@ function EditArticle(props) {
         name="categories"
         rules={[{ required: true, message: "请填写分类" }]}
       >
-        <Select
-          onChange={handleChange}
-          mode="multiple"
-          placeholder="请选择分类"
-          allowClear
-        >
+        <Select mode="multiple" placeholder="请选择分类" allowClear>
           {cateList.map((cate) => {
             return (
               <Option key={cate._id} value={cate._id}>
@@ -135,6 +149,22 @@ function EditArticle(props) {
             );
           })}
         </Select>
+      </Form.Item>
+      <Form.Item label="封面图">
+        <Upload
+          name="file"
+          listType="picture-card"
+          className="avatar-uploader"
+          showUploadList={false}
+          action="http://localhost:3008/upload"
+          onChange={handleChange}
+        >
+          {imageUrl ? (
+            <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+          ) : (
+            uploadButton
+          )}
+        </Upload>
       </Form.Item>
       <Form.Item
         label="文章内容"

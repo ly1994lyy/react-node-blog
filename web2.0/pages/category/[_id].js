@@ -36,7 +36,7 @@ export async function getStaticProps({params}){
     const res = await getCateById(params._id,{
         query:{populate:'articles'}
     })
-    console.log(res)
+    console.log(res.data)
     const articles = res.data
     return {
         props:{

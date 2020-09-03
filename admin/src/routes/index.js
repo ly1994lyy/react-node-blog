@@ -5,11 +5,11 @@ import ArticleList from "../pages/Article/ArticleList";
 import Home from "../pages/Home/Home";
 import EditArticle from "../pages/Article/EditArticle";
 import UserList from "../pages/User/UserList";
-import AdminUserList from "../pages/AdminUser/AdminUserList";
-import EditAdminUser from "../pages/AdminUser/EditAdminUser";
+import BgImgList from "../pages/BackgroundImg/BgImgList"
+import EditBgImg from "../pages/BackgroundImg/EditBgImg"
 
 import {
-    UserOutlined,
+    FileImageOutlined,
     TeamOutlined,
     HomeOutlined,
     ReadOutlined,
@@ -69,15 +69,15 @@ export const adminRouter = [
     icon:<TeamOutlined />
   },
   {
-    path: "/admin/adminuser",
-    component: AdminUserList,
+    path: "/admin/bgimg",
+    component: BgImgList,
     isShow: true,
     exact:true,
-    title: "管理员列表",
-    icon:<UserOutlined />
+    title: "背景图片列表",
+    icon:<FileImageOutlined />
   },
-  { path: "/admin/adminuser/create", component: EditAdminUser, isShow: false },
-  { path: "/admin/adminuser/edit/:id", component: EditAdminUser, isShow: false },
+  { path: "/admin/bgimg/create", component: EditBgImg, isShow: false },
+  { path: "/admin/bgimg/edit/:id", component: EditBgImg, isShow: false },
   {
     path: "/admin/other",
     component: OtherList,

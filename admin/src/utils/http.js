@@ -3,7 +3,7 @@ import { message } from "antd";
 import { createHashHistory } from "history";
 
 const http = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "/admin/api"
+  baseURL: process.env.REACT_APP_API_URL || "/"
 });
 
 http.interceptors.response.use(
